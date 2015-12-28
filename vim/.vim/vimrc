@@ -12,6 +12,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'Raimondi/delimitMate'
 Plugin 'SirVer/ultisnips'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'ervandew/supertab'
@@ -19,6 +20,7 @@ Plugin 'honza/vim-snippets'
 Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'majutsushi/tagbar'
+Plugin 'neovimhaskell/haskell-vim'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
@@ -31,7 +33,7 @@ call vundle#end()
 filetype plugin on
 filetype indent on
 syntax enable
-colorscheme solarized
+colorscheme base16-default
 
 let mapleader=","
 
@@ -136,9 +138,12 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>g- :silent Git stash<CR>:e<CR>
 nnoremap <leader>g+ :silent Git stash pop<CR>:e<CR>
 
+" haskell-vim
+let g:haskell_enable_quantification = 1
+
 " lightline
 set laststatus=2
-let g:lightline = { 'colorscheme': 'solarized' }
+let g:lightline = { 'colorscheme': '16color' }
 
 " supertab
 let g:SuperTabDefaultCompletionType='<C-n>'
@@ -286,6 +291,11 @@ augroup ft_tex
     autocmd FileType tex setlocal commentstring=%\ %s
     autocmd FileType tex setlocal formatoptions+=t
     autocmd BufWrite tex :!pdflatex %<CR>
+augroup END
+
+augroup ft_tmux
+    autocmd!
+    autocmd BufRead .tmux.conf set filetype=tmux
 augroup END
 
 " Custom Functions
