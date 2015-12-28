@@ -1,0 +1,17 @@
+Config { font           = "xft:Source Code Pro Light:size=8:antialiasing=true"
+       , bgColor        = "#101010"
+       , fgColor        = "#c0ffee"
+       , position       = Top
+       , lowerOnStart   = True
+       , hideOnStart    = False
+       , border         = NoBorder
+       , commands       = [ Run StdinReader
+                          , Run Date "%H:%M" "clock" 20
+                          , Run Date "%A %B %d, %Y" "date" 120
+                          , Run MPD ["-t","<fc=#ff5d7d><statei></fc> <artist> <fc=#757575>-</fc> <title>","--","-P","","-Z","PAUSED:","-S","STOPPED"] 3
+                          , Run Network "wlan0" ["-t","<fc=#757575>Down:</fc> <rx>KB <fc=#757575>Up:</fc> <tx>KB"] 30
+                          ]
+       , sepChar        = "%"
+       , alignSep       = "[]"
+       , template       = "%StdinReader% [%date%] %mpd% <fc=#757575>:::</fc> %wlan0% <fc=#757575>:::</fc> %clock% "
+       }
