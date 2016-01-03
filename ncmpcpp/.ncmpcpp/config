@@ -178,7 +178,7 @@ song_status_format = "$2%a $7» $4%t $7» $3%b$0"
 song_library_format = {%n - }{%t}|{%f}
 
 alternative_header_first_line_format = "$b$1:: $4{%t}|{%f} $1::$/b$0"
-alternative_header_second_line_format = "$b{{$4%a}{ $1- $7%b}{ $1($4%y$1)$9}}|{%D}$/b$0"
+alternative_header_second_line_format = "$b{{$4%a}{ $7%b}{ $4%y$9}}|{%D}$/b$0"
 
 now_playing_prefix = "$b$8»$2»$4»$3» "
 
@@ -282,7 +282,7 @@ seek_time = 1
 
 volume_change_step = 2
 
-autocenter_mode = no
+autocenter_mode = yes
 
 centered_cursor = no
 
