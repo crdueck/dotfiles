@@ -1,1 +1,10 @@
 vim/.vim/bundle/*
+mpd/.mpd/log
+mpd/.mpd/pid
+mpd/.mpd/state
+ranger/.config/ranger/bookmarks
+vim/.vim/.netrwhist
+xmonad/.xmonad/xmonad-x86_64-linux
+xmonad/.xmonad/xmonad.errors
+xmonad/.xmonad/xmonad.hi
+xmonad/.xmonad/xmonad.o
