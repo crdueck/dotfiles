@@ -275,6 +275,7 @@ augroup END
 
 augroup ft_javascript
     autocmd!
+    autocmd FileType javascript nnoremap <leader>l :!npm run lint<CR>
     autocmd FileType javascript nnoremap <leader>r :!npm start<CR>
     autocmd FileType javascript nnoremap <leader>t :!npm test<CR>
 augroup END
