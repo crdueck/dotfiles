@@ -1,7 +1,9 @@
 vim/.vim/bundle/*
+mpd/.mpd/database
 mpd/.mpd/log
 mpd/.mpd/pid
 mpd/.mpd/state
+mpd/.mpd/playlists
 ranger/.config/ranger/bookmarks
 vim/.vim/.netrwhist
 xmonad/.xmonad/xmonad-x86_64-linux
