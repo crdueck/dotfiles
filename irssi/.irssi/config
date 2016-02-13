@@ -324,7 +324,7 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#archlinux-unregistered";
+        name = "#archlinux";
         tag = "Freenode";
       }
     );
@@ -370,12 +370,26 @@ windows = {
   7 = {
     items = (
       {
-        type = "QUERY";
+        type = "CHANNEL";
         chat_type = "IRC";
-        name = "nickserv";
+        name = "##math";
         tag = "Freenode";
       }
     );
+    sticky = "yes";
+    parent = "1";
+  };
+  8 = {
+    items = (
+      {
+        type = "CHANNEL";
+        chat_type = "IRC";
+        name = "#csc";
+        tag = "Freenode";
+      }
+    );
+    sticky = "yes";
+    parent = "1";
   };
 };
 mainwindows = {
