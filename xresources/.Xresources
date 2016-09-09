@@ -1,5 +1,21 @@
+! Rofi
+
+! Use extended color scheme
+rofi.color-enabled:                  true
+rofi.color-normal:                   #ffffff,#525d76,#f5f5f5,#5294e2,#ffffff
+rofi.color-urgent:                   #ffffff,#dc322f,#f5f5f5,#5294e2,#dc322f
+rofi.color-active:                   #ffffff,#c2cad0,#f5f5f5,#5294e2,#c2cad0
+rofi.color-window:                   #ffffff,#f5f5f5
+rofi.separator-style:                solid
+
+! Misc rofi
+rofi.opacity:           85
+rofi.lines:             5
+rofi.width:             60
+rofi.fuzzy:             true
+
 ! URxvt settings
-URxvt.font:             xft:Source Code Pro Light:pixelsize=13:antialias=True:hinting=True
+URxvt.font:             xft:Source Code Pro Light:pixelsize=13:antialias=True, xft:FontAwesome:style=Regular
 URxvt.letterSpace:      -1
 URxvt.intensityStyles:  false
 URxvt.matcher.button:   1

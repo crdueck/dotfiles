@@ -1,29 +1,36 @@
 {-# LANGUAGE RecordWildCards #-}
 
-import qualified Data.Map as M
-import qualified XMonad.StackSet as W
-
-import System.Exit (exitSuccess)
-import System.IO (Handle)
-
 import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.TwoPane
 import XMonad.Util.Cursor
 import XMonad.Util.Run
+
+import System.Exit (exitSuccess)
+import System.IO (Handle)
+
+import qualified Data.Map as M
+import qualified XMonad.StackSet as W
+
+rofi :: String
+rofi = "rofi -show run -hide-scrollbar"
+
+tmux :: String
+tmux  = "urxvtc -e /bin/zsh -c '(tmux -q has && tmux att -t 0) || tmux new'"
 
 main :: IO ()
 main = do
     xmobar <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
-    xmonad $ defaultConfig
+    xmonad $ def
         { terminal           = "urxvtc"
         , startupHook        = return ()
         , focusFollowsMouse  = False
-        , normalBorderColor  = "#000000"
-        , focusedBorderColor = "#000000"
+        , normalBorderColor  = "#101010"
+        , focusedBorderColor = "#101010"
         , modMask            = mod1Mask
         , layoutHook         = xLayout
         , logHook            = xLogHook xmobar
@@ -34,30 +41,34 @@ main = do
         }
 
 xLogHook :: Handle -> X ()
-xLogHook hdl = dynamicLogWithPP defaultPP
-    { ppCurrent         = xmobarColor "#c0ffee" "#101010" . pad . const "\x25cf"
-    , ppHidden          = xmobarColor "#757575" "#101010" . pad . const "\x25cf"
-    , ppHiddenNoWindows = xmobarColor "#757575" "#101010" . pad . const "\x25cb"
-    , ppUrgent          = xmobarColor "#ff5d7d" "#101010" . pad
+xLogHook hdl = dynamicLogWithPP def
+    { ppCurrent         = xmobarColor "#7cafc2" "#101010" . pad
+    , ppHidden          = xmobarColor "#f8f8f8" "#101010" . pad
+    , ppHiddenNoWindows = xmobarColor "#383838" "#101010" . pad
+    , ppUrgent          = xmobarColor "#ab4642" "#101010" . pad
     , ppSep             = xmobarColor "#757575" "#101010" ""
     , ppWsSep           = ""
-    , ppTitle           = xmobarColor "#c0ffee" "#101010" . takeNWords 5
+    , ppTitle           = xmobarColor "#f8f8f8" "#101010" . takeNWords 5
     , ppLayout          = const ""
-    , ppOrder           = \(ws:_:t:_) -> [ws, pad t]
+    , ppOrder           = take 1
     , ppOutput          = hPutStrLn hdl
-    } where takeNWords n = unwords . take n . words
+    }
+
+takeNWords :: Int -> String -> String
+takeNWords n = unwords . take n . words
 
 xWorkspaces :: [String]
-xWorkspaces = ["1", "2", "3", "4", "5"]
+xWorkspaces = map fontawesome
+    [ "\xf269" -- web
+    , "\xf121" -- dev
+    , "\xf19d" -- edu
+    , "\xf0e0" -- mail
+    , "\xf11b" -- game
+    ] where fontawesome = wrap "<fn=1>" "</fn>"
 
-xLayout = avoidStruts resizableTall ||| fullscreenFull Full
+xLayout = avoidStruts resizableTall ||| avoidStruts twoPane ||| fullscreenFull Full
     where resizableTall = ResizableTall 1 (3/100) (3/5) []
-
-dmenu :: String
-dmenu = "dmenu_run -i -fn 'xft:Source Code Pro Light:size=8' -nf '#757575' -nb '#101010' -sf '#c0ffee' -sb '#101010'"
-
-tmux :: String
-tmux  = "urxvtc -e /bin/zsh -c '(tmux -q has && tmux att -t 0) || tmux new'"
+          twoPane = TwoPane (3/100) (1/2)
 
 winMask :: KeyMask
 winMask = mod4Mask
@@ -110,8 +121,8 @@ xKeys XConfig{..} = M.fromList $
     , ((0, 0x1008ff16), spawn "mpc prev")
     , ((0, 0x1008ff17), spawn "mpc next")
     -- program bindings
-    , ((modMask, xK_Return), spawn terminal)
-    , ((modMask, xK_p), spawn dmenu)
+    , ((modMask, xK_comma), spawn terminal)
+    , ((modMask, xK_p), spawn rofi)
     , ((modMask, xK_i), spawn tmux)
     ] ++
     -- win-[1..9]: switch to workspace N

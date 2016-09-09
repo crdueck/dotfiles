@@ -10,11 +10,15 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'Raimondi/delimitMate'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/vimproc.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ctrlpvim/ctrlp.vim'
+" Plugin 'eagletmt/ghcmod-vim'
+" Plugin 'eagletmt/neco-ghc'
 Plugin 'ervandew/supertab'
 Plugin 'fatih/vim-go'
 Plugin 'honza/vim-snippets'
@@ -22,6 +26,7 @@ Plugin 'itchyny/lightline.vim'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'majutsushi/tagbar'
 Plugin 'neovimhaskell/haskell-vim'
+Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-repeat'
@@ -59,7 +64,7 @@ set scrolljump=5
 set scrolloff=3
 set shell=zsh
 set shortmess+=aoOtT
-set showbreak=↪
+set showbreak= 
 set showcmd
 set noshowmode
 set splitright
@@ -128,6 +133,7 @@ let g:ctrlp_custom_ignore = { "dir": "dist" }
 
 " easy-align
 vnoremap <Enter> <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " fugitive
 nnoremap <leader>gc :Gcommit -v -q<CR>
@@ -141,6 +147,12 @@ nnoremap <leader>g+ :silent Git stash pop<CR>:e<CR>
 
 " haskell-vim
 let g:haskell_enable_quantification = 1
+let g:haskellmode_completion_ghc = 0
+
+" neocomplete
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#syntax#min_keyword_length = 3
 
 " lightline
 set laststatus=2
@@ -148,6 +160,11 @@ let g:lightline = { 'colorscheme': '16color' }
 
 " supertab
 let g:SuperTabDefaultCompletionType='<C-n>'
+
+" syntastic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 1
 
 " tagbar
 nnoremap <silent> <leader>z :TagbarToggle<CR>
@@ -271,11 +288,16 @@ augroup ft_haskell
     autocmd BufRead *.dump-simpl set filetype=haskell
     autocmd BufRead *.lhs set filetype=lhaskell
     autocmd BufRead *.hsc set filetype=lhaskell
+    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
     autocmd FileType haskell nnoremap <F4> :!ghci %<CR>
-    autocmd FileType haskell nnoremap <leader>b :!cabal build
-    autocmd FileType haskell nnoremap <leader>r :!cabal repl
-    autocmd FileType haskell nnoremap <leader>t :!cabal test
-    autocmd FileType haskell setlocal makeprg=cabal\ repl
+    autocmd FileType haskell nnoremap <leader>b :!stack build<CR>
+    autocmd FileType haskell nnoremap <leader>r :!stack repl<CR>
+    autocmd FileType haskell nnoremap <leader>t :!stack test<CR>
+    autocmd FileType haskell setlocal makeprg=stack\ repl
+
+    autocmd FileType haskell nnoremap <silent> tq :GhcModType<CR>
+    autocmd FileType haskell nnoremap <silent> tw :GhcModTypeInsert<CR>
+    autocmd FileType haskell nnoremap <silent> ts :GhcModSplitFunCase<CR>
 augroup END
 
 augroup ft_html
