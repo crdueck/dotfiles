@@ -10,15 +10,13 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'Raimondi/delimitMate'
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'Shougo/vimproc.vim'
 Plugin 'SirVer/ultisnips'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ctrlpvim/ctrlp.vim'
-" Plugin 'eagletmt/ghcmod-vim'
-" Plugin 'eagletmt/neco-ghc'
+Plugin 'eagletmt/neco-ghc'
 Plugin 'ervandew/supertab'
 Plugin 'fatih/vim-go'
 Plugin 'honza/vim-snippets'
@@ -139,7 +137,7 @@ nmap ga <Plug>(EasyAlign)
 nnoremap <leader>gc :Gcommit -v -q<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <leader>go :Gcheckout<Space>
+nnoremap <leader>gco :Gcheckout<Space>
 nnoremap <leader>gs :Gstatus<CR>
 
 nnoremap <leader>g- :silent Git stash<CR>:e<CR>
@@ -148,11 +146,6 @@ nnoremap <leader>g+ :silent Git stash pop<CR>:e<CR>
 " haskell-vim
 let g:haskell_enable_quantification = 1
 let g:haskellmode_completion_ghc = 0
-
-" neocomplete
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#syntax#min_keyword_length = 3
 
 " lightline
 set laststatus=2
@@ -182,9 +175,9 @@ let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " YouCompleteMe
-let g:ycm_global_ycm_extra_conf='~/.ycm_global_conf.py'
 let g:ycm_key_list_select_completion=['<C-n>']
 let g:ycm_key_list_previous_completion=['<C-p>']
+let g:ycm_semantic_triggers={'haskell': ['.']}
 
 " Command mode
 """"""""""""""
@@ -243,12 +236,14 @@ nnoremap <silent> <space> :nohlsearch<CR>
 
 if &diff
     " last/next diff
-    nnoremap [c [czz
-    nnoremap ]c ]czz
+    nunmap n
+    nunmap p
+    nnoremap n [czz
+    nnoremap p ]czz
 
-    nnoremap dg :diffget<CR>
-    nnoremap dp :diffput<CR>
-    nnoremap du :diffupdate<CR>
+    nnoremap <leader>g :diffget<CR>
+    nnoremap <leader>p :diffput<CR>
+    nnoremap <leader>u :diffupdate<CR>
 endif
 
 " show last search results in quickfix window
@@ -294,10 +289,6 @@ augroup ft_haskell
     autocmd FileType haskell nnoremap <leader>r :!stack repl<CR>
     autocmd FileType haskell nnoremap <leader>t :!stack test<CR>
     autocmd FileType haskell setlocal makeprg=stack\ repl
-
-    autocmd FileType haskell nnoremap <silent> tq :GhcModType<CR>
-    autocmd FileType haskell nnoremap <silent> tw :GhcModTypeInsert<CR>
-    autocmd FileType haskell nnoremap <silent> ts :GhcModSplitFunCase<CR>
 augroup END
 
 augroup ft_html
