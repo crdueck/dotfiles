@@ -237,7 +237,6 @@ nnoremap <silent> <space> :nohlsearch<CR>
 if &diff
     " last/next diff
     nunmap n
-    nunmap p
     nnoremap n [czz
     nnoremap p ]czz
 
