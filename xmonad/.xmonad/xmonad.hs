@@ -86,11 +86,11 @@ xKeys XConfig{..} = M.fromList $
     , ((modMask,               xK_n        ), windows W.focusUp)
     -- move focus to the master window
     , ((modMask,               xK_m        ), windows W.focusMaster)
-    -- swap the focused window and the master window
+    -- swap focused window and master window
     , ((modMask .|. shiftMask, xK_m        ), windows W.swapMaster)
-    -- swap the focused window with the next window
+    -- swap focused window and next window
     , ((modMask .|. shiftMask, xK_t        ), windows W.swapDown)
-    -- swap the focused window with the previous window
+    -- swap focused window and previous window
     , ((modMask .|. shiftMask, xK_n        ), windows W.swapUp)
     -- shrink the master area
     , ((modMask,               xK_h        ), sendMessage Shrink)
