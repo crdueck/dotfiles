@@ -3,6 +3,7 @@
 import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.ResizableTile
@@ -20,25 +21,31 @@ rofi :: String
 rofi = "rofi -show run -hide-scrollbar"
 
 tmux :: String
-tmux  = "urxvtc -e /bin/zsh -c '(tmux -q has && tmux att -t 0) || tmux new'"
+tmux = "urxvtc -e /bin/sh -c '(tmux -q has && tmux att -t 0) || tmux new'"
 
 main :: IO ()
 main = do
-    xmobar <- spawnPipe "xmobar ~/.xmonad/xmobarrc"
+    xmobar <- spawnPipe "xmobar -A 204 ~/.xmonad/xmobarrc"
     xmonad $ def
-        { terminal           = "urxvtc"
-        , startupHook        = return ()
+        { clickJustFocuses   = False
         , focusFollowsMouse  = False
-        , normalBorderColor  = "#101010"
         , focusedBorderColor = "#101010"
-        , modMask            = mod1Mask
-        , layoutHook         = xLayout
-        , logHook            = xLogHook xmobar
-        , workspaces         = xWorkspaces
-        , manageHook         = manageDocks
-        , handleEventHook    = docksEventHook
+        , handleEventHook    = fadeWindowsEventHook
         , keys               = xKeys
+        , layoutHook         = xLayout
+        , logHook            = fadeWindowsLogHook xFadeHook <+> xLogHook xmobar
+        , manageHook         = manageDocks
+        , normalBorderColor  = "#101010"
+        , workspaces         = xWorkspaces
+        , terminal           = "urxvtc"
         }
+
+xFadeHook :: Query Opacity
+xFadeHook = mconcat
+    [ opaque
+    , isUnfocused        --> transparency 0.1
+    , className =? "mpv" --> opaque
+    ]
 
 xLogHook :: Handle -> X ()
 xLogHook hdl = dynamicLogWithPP def
@@ -103,7 +110,7 @@ xKeys XConfig{..} = M.fromList $
     -- sink floating window
     , ((modMask,               xK_f        ), withFocused (windows . W.sink))
     -- restart xmonad/xmobar
-    , ((modMask .|. shiftMask, xK_r        ), spawn "killall xmobar && xmonad --recompile && xmonad --restart")
+    , ((modMask .|. shiftMask, xK_r        ), spawn "killall xmobar; xmonad --recompile && xmonad --restart")
     -- kill xmonad and X11
     , ((modMask .|. shiftMask, xK_q        ), liftIO exitSuccess)
     -- move to next workspace
