@@ -16,9 +16,9 @@ Config { font = "xft:SourceCodePro:antialiasing=true"
                         , "-Z", "<fn=1>\xf04c</fn>"
                         , "-S", "<fn=1>\xf04d</fn>"
                         ] 5
-                    , Run Network "wlan0"
-                        [ "-t", "<fc=#8cafc2><fn=1>\xf1eb</fn></fc> TwoGirlsOneRouter <fc=#7cafc2><fn=1>\xf019</fn></fc> <rx>KB <fc=#7cafc2><fn=1>\xf093</fn></fc> <tx>KB"
+                    , Run Network "wlp4s0"
+                        [ "-t", "<fc=#8cafc2><fn=1>\xf1eb</fn></fc> Rogers49616 <fc=#7cafc2><fn=1>\xf019</fn></fc> <rx>KB <fc=#7cafc2><fn=1>\xf093</fn></fc> <tx>KB"
                         ] 10
                     ]
-       , template = "%StdinReader% }%mpd%{ %wlan0% %clock% "
+       , template = "%StdinReader% }%mpd%{ %wlp4s0% %clock% "
        }
