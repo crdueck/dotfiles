@@ -30,22 +30,15 @@ main = do
         { clickJustFocuses   = False
         , focusFollowsMouse  = False
         , focusedBorderColor = "#101010"
-        , handleEventHook    = fadeWindowsEventHook
+        , handleEventHook    = docksEventHook
         , keys               = xKeys
         , layoutHook         = xLayout
-        , logHook            = fadeWindowsLogHook xFadeHook <+> xLogHook xmobar
+        , logHook            = xLogHook xmobar
         , manageHook         = manageDocks
         , normalBorderColor  = "#101010"
         , workspaces         = xWorkspaces
         , terminal           = "urxvtc"
         }
-
-xFadeHook :: Query Opacity
-xFadeHook = mconcat
-    [ opaque
-    , isUnfocused        --> transparency 0.1
-    , className =? "mpv" --> opaque
-    ]
 
 xLogHook :: Handle -> X ()
 xLogHook hdl = dynamicLogWithPP def
