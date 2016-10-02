@@ -286,7 +286,7 @@ statusbar = {
   };
 };
 settings = {
-  core = { real_name = ""; user_name = "cdk"; nick = "crdueck"; };
+  core = { real_name = "Unknown"; user_name = "cdk"; nick = "crdueck"; };
   "fe-text" = { actlist_sort = "refnum"; };
   "perl/core/scripts" = {
     awl_block = "-11";
