@@ -9,6 +9,7 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 
+"Plugin 'eagletmt/neco-ghc'
 Plugin 'Raimondi/delimitMate'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe'
@@ -41,7 +42,7 @@ call vundle#end()
 filetype plugin on
 filetype indent on
 syntax enable
-colorscheme solarized
+colorscheme base16-default-dark
 
 let mapleader=","
 
