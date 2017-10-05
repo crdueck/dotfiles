@@ -7,4 +7,4 @@ xcompmgr -c -C -o.0 &
 xrdb ~/.Xresources
 
 # start window manager
-xmonad
+exec i3

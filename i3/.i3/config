@@ -19,6 +19,8 @@ new_window pixel 1
 new_float  pixel 1
 hide_edge_borders smart
 
+workspace_layout tabbed
+
 # use these keys for focus, movement, and resize directions when reaching for
 # the arrows is not convenient
 set $left  h
@@ -55,28 +57,33 @@ bindsym Mod1+Shift+$down move down
 bindsym Mod1+Shift+$up move up
 bindsym Mod1+Shift+$right move right
 
+# float and stick window
+bindsym Mod1+g sticky toggle floating toggle
+
 # split in horizontal orientation
 bindsym Mod1+slash split h
 
 # split in vertical orientation
 bindsym Mod1+equal split v
 
+bindsym Mod1+Shift+w split v split h
+
 # enter fullscreen mode for the focused container
-bindsym Mod1+u fullscreen toggle
+bindsym Mod1+space fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym Mod1+apostrophe layout stacking
+# bindsym Mod1+apostrophe layout stacking
 bindsym Mod1+comma      layout tabbed
 bindsym Mod1+period     layout toggle split
 
 # toggle tiling / floating
-bindsym Mod1+Shift+space floating toggle
+bindsym Mod1+Shift+f floating toggle
 
 # change focus between tiling / floating windows
-bindsym Mod1+space focus mode_toggle
+bindsym Mod1+f focus mode_toggle
 
 # focus the parent container
-bindsym Mod1+a focus parent
+bindsym Mod1+a focus parentspace
 
 # focus the child container
 #bindsym Mod1+d focus child
