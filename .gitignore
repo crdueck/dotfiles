@@ -5,6 +5,7 @@ mpd/.mpd/pid
 mpd/.mpd/state
 mpd/.mpd/playlists
 ranger/.config/ranger/bookmarks
+ranger/.config/ranger/history
 vim/.vim/.netrwhist
 xmonad/.xmonad/xmonad-x86_64-linux
 xmonad/.xmonad/xmonad.errors
