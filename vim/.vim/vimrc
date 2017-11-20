@@ -163,12 +163,16 @@ let g:lightline = {
       \              [ 'filetype' ] ]
       \ },
       \ 'component_function': {
+      \   'filetype': 'FileTypeWithDevIcon',
       \   'git-branch': 'LightlineFugitive',
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
+function! FileTypeWithDevIcon()
+    return strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() . &filetype : ''
+endfunction
 
 function! LightlineFugitive()
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && exists('*fugitive#head')
