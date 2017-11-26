@@ -43,7 +43,7 @@ bindsym Mod1+Shift+Return exec --no-startup-id ~/bin/tmux-shell.sh
 bindsym Mod1+Shift+q kill
 
 # start rofi
-bindsym Mod1+p exec --no-startup-id rofi -show run -hide-scrollbar
+bindsym Mod1+p exec --no-startup-id rofi -show run
 
 # change focus
 bindsym Mod1+$left focus left
