@@ -317,12 +317,6 @@ nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen 6<CR>
 " syntax highlighting information
 noremap <leader>si :call <SID>SynStack()<CR>
 
-" sane window movement
-"nnoremap <C-j> <C-w>j
-"nnoremap <C-k> <C-w>k
-"nnoremap <C-h> <C-w>h
-"nnoremap <C-l> <C-w>l
-
 " Autocommands
 """"""""""""""
 autocmd FileType help wincmd L
