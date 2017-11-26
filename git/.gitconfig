@@ -1,0 +1,9 @@
+[user]
+	email = crdueck@uwaterloo.ca
+	name = Chris Dueck
+
+[diff]
+	tool = vimdiff
+
+[difftool]
+	prompt = false
