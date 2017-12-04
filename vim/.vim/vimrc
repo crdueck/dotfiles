@@ -160,11 +160,11 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
-function! FileTypeWithDevIcon()
+function! FileTypeWithDevIcon() abort
     return strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() . &filetype : ''
 endfunction
 
-function! LightlineFugitive()
+function! LightlineFugitive() abort
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && exists('*fugitive#head')
       let branch = fugitive#head()
       return branch !=# '' ?  ' '.branch : ''
@@ -259,10 +259,6 @@ nnoremap ;; ;
 nnoremap ' `
 nnoremap ` '
 
-" autoindent entire file
-nnoremap <leader>= :call Preserve("normal gg=G")<CR>
-" autoformat entire file
-nnoremap <leader>q :call Preserve("normal gggqG")<CR>
 " remove multiple lines of whitespace
 nnoremap <leader>l :call Preserve(":v/./,/./-j")<CR>
 " remove trailing whitespace
@@ -358,11 +354,6 @@ augroup ft_javascript
     autocmd FileType javascript nnoremap <leader>t :!npm test<CR>
 augroup END
 
-augroup ft_markdown
-    autocmd!
-    autocmd BufNewFile,BufRead *.md set filetype=markdown
-augroup END
-
 augroup ft_tex
     autocmd!
     autocmd BufNewFile,BufRead *.tex set filetype=tex
@@ -379,19 +370,14 @@ augroup END
 
 " Custom Functions
 """"""""""""""""""
-function! Preserve(command)
-    " Preparation: save last search, and cursor position
-    let s = @
+function! Preserve(command) abort
     let l = line(".")
     let c = col(".")
-    " Do the deed:
     execute a:command
-    " Clean up: restore previous search history, and cursor position
-    let @/ = s
     call cursor(l, c)
 endfunction
 
-function! <SID>SynStack()
+function! <SID>SynStack() abort
     if exists("*synstack")
         echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
     endif
