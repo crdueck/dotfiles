@@ -1,47 +1,37 @@
-" vimrc
+" Plugins
+"""""""""
 filetype off
+call plug#begin('~/.vim/bundle')
 
-" Vundle
-""""""""
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+Plug 'Raimondi/delimitMate'
+Plug 'SirVer/ultisnips'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --go-completer' }
+Plug 'chriskempson/base16-vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ervandew/supertab'
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'honza/vim-snippets'
+Plug 'itchyny/lightline.vim'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'justinmk/vim-sneak'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'w0rp/ale'
 
-Plugin 'gmarik/Vundle.vim'
+Plug 'ryanoasis/vim-devicons'
 
-Plugin 'Raimondi/delimitMate'
-Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'chriskempson/base16-vim'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'ervandew/supertab'
-Plugin 'fatih/vim-go'
-Plugin 'honza/vim-snippets'
-Plugin 'itchyny/lightline.vim'
-Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'justinmk/vim-sneak'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'majutsushi/tagbar'
-Plugin 'neovimhaskell/haskell-vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'w0rp/ale'
-
-Plugin 'ryanoasis/vim-devicons'
-
-call vundle#end()
+call plug#end()
 
 " Preamble
 """"""""""
-syntax enable
-filetype plugin indent on
-colorscheme base16-default-dark
-
 let mapleader=","
+colorscheme base16-default-dark
 
 " General
 """""""""
