@@ -1,65 +1,56 @@
-" vimrc
-set nocompatible
 filetype off
 
-" Vundle
+" Plugins
 """"""""
-set runtimepath+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/bundle')
 
-Plugin 'gmarik/Vundle.vim'
+Plug 'SirVer/ultisnips'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --go-completer' }
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ervandew/supertab'
+Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'honza/vim-snippets'
+Plug 'itchyny/lightline.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'joshdick/onedark.vim'
+Plug 'junegunn/fzf.vim' | Plug '/usr/local/opt/fzf'
+Plug 'junegunn/vim-easy-align'
+Plug 'justinmk/vim-sneak'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
+Plug 'w0rp/ale'
 
-Plugin 'Raimondi/delimitMate'
-Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'ervandew/supertab'
-Plugin 'fatih/vim-go'
-Plugin 'honza/vim-snippets'
-Plugin 'itchyny/lightline.vim'
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'justinmk/vim-sneak'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'majutsushi/tagbar'
-Plugin 'scrooloose/nerdtree'
-Plugin 'shawncplus/phpcomplete.vim'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'vim-php/tagbar-phpctags.vim'
-Plugin 'w0rp/ale'
-
-Plugin 'ryanoasis/vim-devicons'
-
-call vundle#end()
+call plug#end()
 
 " Preamble
 """"""""""
-filetype plugin on
-filetype indent on
-syntax enable
-colorscheme solarized
+colorscheme onedark
 
 let mapleader=","
+let g:onedark_termcolors=16
 
 " General
 """""""""
 set autoread
 set background=dark
-set cursorline
+set dictionary=/usr/share/dict/words
 set diffopt=filler,vertical
 set encoding=utf-8
-set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
+set grepprg=rg\ --vimgrep
 set hidden
 set history=1000
+set laststatus=2
 set lazyredraw
 set mouse=a
 set nobackup
+set noshowmode
 set noswapfile
 set number
 set pastetoggle=<F12>
@@ -68,9 +59,8 @@ set scrolloff=3
 set shell=zsh
 set shortmess+=aoOtT
 set showbreak=↵
-set showcmd
-set noshowmode
 set splitright
+set synmaxcol=800
 set t_Co=256
 set tags=./tags;
 set timeoutlen=500
@@ -112,50 +102,56 @@ set nofoldenable
 " Formatting & Whitespace
 """""""""""""""""""""""""
 set autoindent
-set smartindent
 set backspace=eol,indent,start
 set expandtab
 set formatoptions=crqj
 set linebreak
 set list
-set listchars=tab:▷•,trail:•,nbsp:⋅,extends:…
+set listchars=tab:▷•,trail:•,nbsp:⋅
 set shiftwidth=4
 set smarttab
-set softtabstop=4
-set tabstop=4
 set textwidth=80
 set nowrap
 
 " Plugins
 """""""""
 
-" delimitMate
-let g:delimitMate_expand_cr = 1
-
 " easy-align
-vmap <Enter> <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+vmap <Enter> <Plug>(EasyAlign)
 
 " fugitive
-nnoremap <leader>gc :Gcommit -v -q<CR>
-nnoremap <leader>gd :Gdiff<CR>
-nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <leader>gco :Gcheckout<Space>
-nnoremap <leader>gs :Gstatus<CR>
-
-nnoremap <leader>g- :silent Git stash<CR>:e<CR>
-nnoremap <leader>g+ :silent Git stash pop<CR>:e<CR>
+nnoremap <leader>gc  :Gcommit -v -q<CR>
+nnoremap <leader>gco :Gread<CR>
+nnoremap <leader>gia :Gwrite<CR>
+nnoremap <leader>gwd :Gdiff<CR>
+nnoremap <leader>gws :Gstatus<CR>
 
 " gutentags
-let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js']
 let g:gutentags_cache_dir = "~/.cache/gutentags"
+let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js']
 
 " fzf
-nnoremap <C-p> :FZF<CR>
-nnoremap <leader>s :call fzf#vim#tags(expand('<cword>'), {'options': '--exact --select-1 --exit-0'})<CR>
+nnoremap <C-p> :Files<CR>
+nnoremap <C-o> :Buffers<CR>
+nnoremap <C-g> :GFiles?<CR>
 
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+nnoremap <leader>rg :Rg<CR>
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%', '?'),
+    \   <bang>0)
+
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
   \ 'hl':      ['fg', 'Comment'],
   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
@@ -166,21 +162,21 @@ let g:fzf_colors =
   \ 'pointer': ['fg', 'Exception'],
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+  \ 'header':  ['fg', 'Comment'],
+  \ }
 
 let g:fzf_action = {
       \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
+      \ 'ctrl-v': 'vsplit',
       \ }
 
 " lightline
-set laststatus=2
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
+      \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'readonly', 'filename' ],
-      \             [ 'git-branch', 'modified' ] ],
+      \             [ 'git-branch' ] ],
       \   'right': [ [ 'lineinfo' ],
       \              [ 'percent' ],
       \              [ 'filetype' ] ],
@@ -195,14 +191,21 @@ let g:lightline = {
 function! LightlineFugitive()
     if exists('*fugitive#head')
         let branch = fugitive#head()
-        return branch !=# '' ? ' '.branch : ''
+        return branch !=# '' ? ' '.branch : ''
     endif
     return ''
 endfunction
 
 " vim-go
+let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_extra_types = 1
+
+let g:go_auto_type_info = 1
+let g:go_fmt_command = "goimports"
+
+" supertab
+let g:SuperTabDefaultCompletionType="<C-n>"
 
 " tagbar
 nnoremap <silent> <leader>z :TagbarToggle<CR>
@@ -242,32 +245,22 @@ let g:tagbar_type_make = {
     \ 'kinds': [ 'm:macros', 't:targets' ]
 \}
 
-" nerdtree
-nnoremap <silent> <leader>v :NERDTreeToggle<CR>
-autocmd Filetype nerdtree setlocal nolist
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeAutoDeleteBuffer = 1
-
 " ultisnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:SuperTabDefaulCompletionType="<C-n>"
+inoremap <expr> <CR> pumvisible() ? "\<C-k>" : "\<CR>"
+let g:UltiSnipsExpandTrigger="<C-k>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
 
 " YouCompleteMe
-let g:ycm_key_list_select_completion=['<C-n>']
+let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_key_list_previous_completion=['<C-p>']
-let g:ycm_semantic_triggers = {
-    \ 'haskell': ['.']
-\ }
-let g:ycm_filetype_specific_completion_to_disable = { 'php': 1 }
+let g:ycm_key_list_select_completion=['<C-n>']
+let g:ycm_semantic_triggers = { 'haskell': ['.'] }
 
 " Command mode
 """"""""""""""
-cnoremap ww w !sudo tee % >/dev/null
+cnoremap ww :SudoWrite<CR>
 cnoremap qq qa!
-cnoremap cwd lcd %:p:h
 
 " Visual mode
 """""""""""""
@@ -287,14 +280,10 @@ nnoremap ;; ;
 nnoremap ' `
 nnoremap ` '
 
-" autoindent entire file
-nnoremap <leader>= :call Preserve("normal gg=G")<CR>
-" autoformat entire file
-nnoremap <leader>q :call Preserve("normal gggqG")<CR>
-" remove multiple lines of whitespace
-nnoremap <leader>l :call Preserve(":v/./,/./-j")<CR>
 " remove trailing whitespace
 nnoremap <leader>w :call Preserve("%s/\\s\\+$//e")<CR>
+" remove consecutive lines of whitespace
+nnoremap <leader>ww :call Preserve(":v/./,/./-j")<CR>
 
 " go to older change
 nnoremap g; g;zz
@@ -309,6 +298,10 @@ nnoremap k gk
 " center search results
 nnoremap n nzzzv
 nnoremap N Nzzzv
+
+" stop x and c from clobbering the yank register
+nnoremap x "_x
+nnoremap c "_c
 
 " make Y behave like C and D
 nnoremap Y y$
@@ -335,16 +328,20 @@ nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen 6<CR>
 " syntax highlighting information
 noremap <leader>si :call <SID>SynStack()<CR>
 
-" sane window movement
-"nnoremap <C-j> <C-w>j
-"nnoremap <C-k> <C-w>k
-"nnoremap <C-h> <C-w>h
-"nnoremap <C-l> <C-w>l
+nnoremap <leader>rr :redr!<CR>
+
+" Equalize open windows, while respecting winfix(height|width)
+nnoremap = :wincmd =<CR>
 
 " Autocommands
 """"""""""""""
 autocmd FileType help wincmd L
 autocmd InsertLeave * set nopaste
+
+augroup ft_docker
+    autocmd!
+    autocmd BufNewFile,BufRead Dockerfile* set filetype=dockerfile
+augroup END
 
 augroup ft_glsl
     autocmd!
@@ -362,22 +359,30 @@ augroup ft_go
     autocmd FileType go nmap <leader>t <Plug>(go-test)
 augroup END
 
+augroup ft_java
+    autocmd!
+    autocmd FileType java let g:ale_enabled=0
+augroup END
+
 augroup ft_haskell
     autocmd!
     autocmd BufRead *.dump-simpl set filetype=haskell
-    autocmd BufRead *.lhs set filetype=lhaskell
-    autocmd BufRead *.hsc set filetype=lhaskell
+    autocmd BufRead *.lhs,*hsc set filetype=lhaskell
     autocmd FileType haskell nnoremap <F4> :!ghci %<CR>
     autocmd FileType haskell nnoremap <leader>b :!stack build<CR>
     autocmd FileType haskell nnoremap <leader>r :!stack repl<CR>
     autocmd FileType haskell nnoremap <leader>t :!stack test<CR>
     autocmd FileType haskell setlocal makeprg=stack\ repl
-    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 augroup END
 
 augroup ft_html
     autocmd!
     autocmd FileType html,xml setlocal shiftwidth=4 tabstop=4
+augroup END
+
+augroup ft_nginx
+    autocmd!
+    autocmd BufRead *rewrite_rules/*.conf set ft=nginx
 augroup END
 
 augroup ft_python
@@ -391,11 +396,7 @@ augroup ft_javascript
     autocmd FileType javascript nnoremap <leader>l :!npm run lint<CR>
     autocmd FileType javascript nnoremap <leader>r :!npm start<CR>
     autocmd FileType javascript nnoremap <leader>t :!npm test<CR>
-augroup END
-
-augroup ft_markdown
-    autocmd!
-    autocmd BufNewFile,BufRead *.md set filetype=markdown
+    autocmd Filetype javascript setlocal shiftwidth=2 tabstop=2
 augroup END
 
 augroup ft_tex
@@ -414,6 +415,7 @@ augroup END
 
 augroup ft_php
     autocmd!
+    autocmd BufNewFile,BufRead *.phps set filetype=php
     autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
 augroup END
 
