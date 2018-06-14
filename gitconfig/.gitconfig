@@ -1,0 +1,26 @@
+[user]
+	name  = Chris Dueck
+	email = chris.dueck@wattpad.com
+
+[diff]
+	algorithm = patience
+	tool = vimdiff
+
+[difftool]
+	prompt = false
+
+[merge]
+    algorithm = patience
+    tool = vimdiff
+
+[mergetool]
+    keepBackup = false
+
+[mergetool "vimdiff"]
+    path = /usr/local/bin/vimdiff
+
+[url "https://github.com/Wattpad/"]
+	insteadOf = "wp:"
+
+[url "https://github/"]
+	insteadOf = "gh:"
