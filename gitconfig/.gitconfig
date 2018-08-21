@@ -24,3 +24,5 @@
 
 [url "https://github/"]
 	insteadOf = "gh:"
+[push]
+	default = current
