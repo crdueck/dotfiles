@@ -1,43 +1,40 @@
-" Plugins
-"""""""""
-filetype off
+" Preamble {
 call plug#begin('~/.vim/bundle')
 
-Plug 'Raimondi/delimitMate'
 Plug 'SirVer/ultisnips'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --go-completer' }
+Plug 'arcticicestudio/nord-vim'
 Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'ervandew/supertab'
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+" Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
+Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'justinmk/vim-sneak'
+Plug 'lifepillar/vim-mucomplete'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'majutsushi/tagbar'
-Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'sheerun/vim-polyglot'
+Plug 'tommcdo/vim-lion'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
-
-Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
-" Preamble
-""""""""""
 let mapleader=","
-colorscheme base16-default-dark
+colorscheme nord
+" }
 
-" General
-"""""""""
+" General {
 set autoread
 set background=dark
-set cursorline
 set diffopt=filler,vertical
 set encoding=utf-8
 set grepprg=rg\ --vimgrep
@@ -53,27 +50,27 @@ set pastetoggle=<F12>
 set scrolljump=5
 set scrolloff=3
 set shell=zsh
-set shortmess+=aoOtT
+set shortmess+=c
 set showbreak=↵
-set showcmd
 set noshowmode
 set splitright
 set t_Co=256
 set tags=./tags;
-set timeoutlen=500
-set ttyfast
+set ttimeout
+set ttimeoutlen=100
+" }
 
-" Search/Complete
-"""""""""""""""""
-set completeopt=menu,menuone,longest
+" Search/Complete {
+set complete-=i
+set completeopt=menuone,noselect
 set hlsearch
 set ignorecase
 set incsearch
 set magic
 set smartcase
+" }
 
-" Wildmenu
-""""""""""
+" Wildmenu {
 set wildmenu
 set wildmode=list:longest
 
@@ -89,15 +86,15 @@ set wildignore+=mgrations                       " Django migrations
 set wildignore+=*.pyc                           " Python byte code
 set wildignore+=target                          " SBT target directories
 set wildignorecase
+" }
 
-" Folding
-"""""""""
+" Folding {
 set foldmethod=manual
 set foldnestmax=3
 set nofoldenable
+" }
 
-" Formatting & Whitespace
-"""""""""""""""""""""""""
+" Formatting & Whitespace {
 set autoindent
 set backspace=eol,indent,start
 set expandtab
@@ -109,41 +106,57 @@ set shiftwidth=4
 set smarttab
 set textwidth=80
 set nowrap
+" }
 
-" Plugins
-"""""""""
+" Plugins {
 
-" delimitMate
-let g:delimitMate_expand_cr = 1
-
-" easy-align
-vmap <Enter> <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+" auto-pairs {
+let g:AutoPairsMapCR = 0
+let g:AutoPairsMultilineClose = 0
+" }
 
 " fugitive
-nnoremap <leader>gc :Gcommit -v -q<CR>
-nnoremap <leader>gco :Gcheckout<Space>
-nnoremap <leader>gia :Gwrite<CR>
-nnoremap <leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <leader>gwd :Gdiff<CR>
-nnoremap <leader>gws :Gstatus<CR>
-
-" gutentags
-let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js']
+nnoremap <leader>gc  :Gcommit -v -q<cr>
+nnoremap <leader>gco :Gcheckout<space>
+nnoremap <leader>gia :Gwrite<cr>
+nnoremap <leader>gwd :Gdiff<cr>
+nnoremap <leader>gws :Gstatus<cr>
+" }
 
 " fzf
-nnoremap <C-p> :FZF<CR>
-nnoremap <leader>s :call fzf#vim#tags(expand('<cword>'), {'options': '--exact --select-1 --exit-0'})<CR>
+nnoremap <leader>f :Files<cr>
+nnoremap <leader>? :GFiles?<cr>
+nnoremap <leader><space> :Buffers<cr>
 
 let g:fzf_action = {
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit'
       \ }
 
+nnoremap <leader>rg :Rg<space>
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+" }
+
+" vim-go
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_fmt_command = "goimports"
+" }
+
+" gutentags
+let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js']
+" }
+
 " lightline
 set laststatus=2
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
+      \ 'colorscheme': 'nord',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'filename' ],
@@ -160,10 +173,6 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
-function! FileTypeWithDevIcon() abort
-    return strlen(&filetype) ? WebDevIconsGetFileTypeSymbol() . &filetype : ''
-endfunction
-
 function! LightlineFugitive() abort
     if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && exists('*fugitive#head')
       let branch = fugitive#head()
@@ -171,84 +180,43 @@ function! LightlineFugitive() abort
     endif
     return ''
 endfunction
+" }
 
-" vim-go
-let g:go_highlight_operators = 1
-let g:go_highlight_extra_types = 1
+" mu-complete
+let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#chains = {
+    \ 'default':  ['ulti', 'omni', 'keyp' ],
+    \ 'markdown': ['ulti', 'dict', 'keyp' ],
+    \ }
 
-" tagbar
-nnoremap <silent> <leader>z :TagbarToggle<CR>
-let g:tagbar_autofocus=1
-let g:tagbar_compact=1
-let g:tagbar_foldlevel=0
+let g:mucomplete#can_complete = {
+    \ 'default': {
+    \    'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|\.\)$' }
+    \ }
+    \ }
 
-let g:tagbar_type_go = {
-    \ 'ctagstype' : 'go',
-    \ 'kinds'     : [
-        \ 'p:package',
-        \ 'i:imports:1',
-        \ 'c:constants',
-        \ 'v:variables',
-        \ 't:types',
-        \ 'n:interfaces',
-        \ 'w:fields',
-        \ 'e:embedded',
-        \ 'm:methods',
-        \ 'r:constructor',
-        \ 'f:functions'
-    \ ],
-    \ 'sro' : '.',
-    \ 'kind2scope' : {
-        \ 't' : 'ctype',
-        \ 'n' : 'ntype'
-    \ },
-    \ 'scope2kind' : {
-        \ 'ctype' : 't',
-        \ 'ntype' : 'n'
-    \ },
-    \ 'ctagsbin'  : 'gotags',
-    \ 'ctagsargs' : '-sort -silent'
-\ }
+function! OmniCR() abort
+    return pumvisible()
+        \ ? "\<c-r>=UltiSnips#ExpandSnippetOrJump()\<cr>"
+        \ : "\<plug>(MUcompleteCR)\<cr>"
+endfunction
 
-let g:tagbar_type_make = {
-    \ 'kinds':[ 'm:macros', 't:targets' ]
-\ }
+" imap <silent> <expr> <cr> OmniCR()
+" }
 
-" nerdtree
-nnoremap <silent> <leader>v :NERDTreeToggle<CR>
-autocmd Filetype nerdtree setlocal nolist
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeMinimalUI = 1
-let g:NERDTreeAutoDeleteBuffer = 1
+" ultisnips {
+let g:UltiSnipsExpandTrigger="<nop>"
+" }
+" }
 
-" ultisnips
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-let g:SuperTabDefaulCompletionType="<C-n>"
+" Key Mappings {
 
-" ale
-let g:ale_linters = { 'haskell': ['ghc'] }
-
-" YouCompleteMe
-let g:ycm_key_list_select_completion=['<C-n>']
-let g:ycm_key_list_previous_completion=['<C-p>']
-let g:ycm_semantic_triggers={'haskell': ['.']}
-
-" Command mode
-""""""""""""""
-cnoremap ww w !sudo tee % >/dev/null
+" force quit
 cnoremap qq qa!
-cnoremap cwd lcd %:p:h
 
-" Visual mode
-"""""""""""""
-xnoremap <leader>s :w !curl -sF 'sprunge=<-' http://sprunge.us<CR>
-
-" Normal mode
-"""""""""""""
-" jump between parentheses with <tab>
-nnoremap <tab> %
+" search/replace visual selection
+xnoremap gs y:s/<c-r>"//g<left><left>
+xnoremap Gs y:%s/<c-r>"//g<left><left>
 
 " save 1,000,000 keystrokes
 nnoremap ; :
@@ -259,117 +227,9 @@ nnoremap ;; ;
 nnoremap ' `
 nnoremap ` '
 
-" remove multiple lines of whitespace
-nnoremap <leader>l :call Preserve(":v/./,/./-j")<CR>
 " remove trailing whitespace
-nnoremap <leader>w :call Preserve("%s/\\s\\+$//e")<CR>
+nnoremap <leader>w :call Preserve("%s/\\s\\+$//e")<cr>
 
-" go to older change
-nnoremap g; g;zz
-" go to newer change
-nnoremap g, g,zz
-" go to last position
-nnoremap '' ''zz
-
-nnoremap j gj
-nnoremap k gk
-
-" center search results
-nnoremap n nzzzv
-nnoremap N Nzzzv
-
-" make Y behave like C and D
-nnoremap Y y$
-
-" execute 'q' macro instead of the annoying Ex mode
-nnoremap Q @q
-
-nnoremap <silent> <space> :nohlsearch<CR>
-
-if &diff
-    " last/next diff
-    nunmap n
-    nnoremap n [czz
-    nnoremap p ]czz
-
-    nnoremap <leader>g :diffget<CR>
-    nnoremap <leader>p :diffput<CR>
-    nnoremap <leader>u :diffupdate<CR>
-endif
-
-" show last search results in quickfix window
-nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen 6<CR>
-
-" syntax highlighting information
-noremap <leader>si :call <SID>SynStack()<CR>
-
-" Autocommands
-""""""""""""""
-autocmd FileType help wincmd L
-autocmd InsertLeave * set nopaste
-
-augroup ft_glsl
-    autocmd!
-    autocmd BufNewFile,BufRead *.glsl set filetype=glsl
-augroup END
-
-augroup ft_go
-    autocmd!
-    autocmd FileType go nmap <leader>b <Plug>(go-build)
-    autocmd FileType go nmap <leader>c <Plug>(go-coverage)
-    autocmd FileType go nmap <leader>i <Plug>(go-info)
-    autocmd FileType go nmap <leader>l <Plug>(go-lint)
-    autocmd FileType go nmap <leader>r <Plug>(go-run)
-    autocmd FileType go nmap <leader>s <Plug>(go-implements)
-    autocmd FileType go nmap <leader>t <Plug>(go-test)
-augroup END
-
-augroup ft_haskell
-    autocmd!
-    autocmd BufRead *.dump-simpl set filetype=haskell
-    autocmd BufRead *.lhs set filetype=lhaskell
-    autocmd BufRead *.hsc set filetype=lhaskell
-    autocmd FileType haskell nnoremap <F4> :!ghci %<CR>
-    autocmd FileType haskell nnoremap <leader>b :!stack build<CR>
-    autocmd FileType haskell nnoremap <leader>r :!stack repl<CR>
-    autocmd FileType haskell nnoremap <leader>t :!stack test<CR>
-    autocmd FileType haskell setlocal makeprg=stack\ repl
-augroup END
-
-augroup ft_html
-    autocmd!
-    autocmd FileType html,xml setlocal shiftwidth=4 tabstop=4
-augroup END
-
-augroup ft_python
-    autocmd!
-    autocmd FileType python nnoremap <leader>r :!python %<CR>
-    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-augroup END
-
-augroup ft_javascript
-    autocmd!
-    autocmd FileType javascript nnoremap <leader>l :!npm run lint<CR>
-    autocmd FileType javascript nnoremap <leader>r :!npm start<CR>
-    autocmd FileType javascript nnoremap <leader>t :!npm test<CR>
-augroup END
-
-augroup ft_tex
-    autocmd!
-    autocmd BufNewFile,BufRead *.tex set filetype=tex
-    autocmd FileType tex nnoremap <F4> :!pdflatex %<CR>
-    autocmd FileType tex setlocal commentstring=%\ %s
-    autocmd FileType tex setlocal formatoptions+=t
-    autocmd BufWrite tex :!pdflatex %<CR>
-augroup END
-
-augroup ft_tmux
-    autocmd!
-    autocmd BufRead .tmux.conf set filetype=tmux
-augroup END
-
-" Custom Functions
-""""""""""""""""""
 function! Preserve(command) abort
     let l = line(".")
     let c = col(".")
@@ -377,17 +237,63 @@ function! Preserve(command) abort
     call cursor(l, c)
 endfunction
 
-function! <SID>SynStack() abort
-    if exists("*synstack")
-        echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-    endif
-endfunction
+nnoremap j gj
+nnoremap k gk
 
-" GViM settings
-"""""""""""""""
-if has('gui_running')
-    set guioptions=
-    set guiheadroom=0
+" stop x and c from clobbering yank register
+nnoremap x "_x
+nnoremap c "_c
 
-    autocmd FocusLost * silent! wa
-endif
+" make Y behave like C and D
+nnoremap Y y$
+
+" execute 'q' macro instead of the annoying Ex mode
+nnoremap Q @q
+
+nnoremap <silent> <space> :nohlsearch<cr>
+
+" show last search results in quickfix window
+nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen 6<cr>
+" }
+
+" Autocommands {
+autocmd FileType help wincmd L
+autocmd InsertLeave * set nopaste
+
+augroup ft_go
+    autocmd!
+    autocmd FileType go nmap <leader>b <plug>(go-build)
+    autocmd FileType go nmap <leader>r <plug>(go-run)
+    autocmd FileType go nmap <leader>t <plug>(go-test)
+augroup END
+
+augroup ft_haskell
+    autocmd!
+    autocmd BufRead *.dump-simpl set filetype=haskell
+    autocmd FileType haskell nnoremap <leader>b :make build<cr>
+    autocmd FileType haskell nnoremap <leader>r :make runghc %<cr>
+    autocmd FileType haskell nnoremap <leader>t :make test<cr>
+    autocmd FileType haskell setlocal makeprg=stack
+    " autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+    autocmd FileType haskell let g:ale_enabled=0
+augroup END
+
+augroup ft_python
+    autocmd!
+    autocmd FileType python nnoremap <leader>r :!python3 %<cr>
+augroup END
+
+augroup ft_javascript
+    autocmd!
+    autocmd FileType javascript nnoremap <leader>r :!npm start<cr>
+    autocmd FileType javascript nnoremap <leader>t :!npm test<cr>
+augroup END
+
+augroup ft_tex
+    autocmd!
+    autocmd BufWrite tex :!pdflatex %<cr>
+    autocmd FileType tex nnoremap <leader>b :!pdflatex %<cr>
+    autocmd FileType tex setlocal formatoptions+=t
+augroup END
+" }
