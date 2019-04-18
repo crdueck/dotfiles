@@ -3,18 +3,22 @@
 call plug#begin('~/.vim/bundle')
 
 Plug 'SirVer/ultisnips'
+Plug 'arcticicestudio/nord-vim'
+Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
+Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf.vim' | Plug '/usr/local/opt/fzf'
 Plug 'justinmk/vim-sneak'
-Plug 'lifepillar/vim-mucomplete'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'shawncplus/phpcomplete.vim', { 'for': 'php' }
+" Plug 'lvht/phpcd.vim', { 'for': 'php', 'do': 'composer install' }
+Plug 'majutsushi/tagbar'
+Plug 'maralla/completor.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tommcdo/vim-lion'
 Plug 'tpope/vim-abolish'
@@ -33,15 +37,15 @@ call plug#end()
 
 " Editor Settings {{{
 
-" colorscheme {{{
-colorscheme onedark
+colorscheme nord
 let g:onedark_termcolors=16
-" }}}
 
-" general {{{
+" general
 set autoread
 set autowrite
 set background=dark
+set backspace=eol,indent,start
+set belloff=all
 set dictionary=/usr/share/dict/words
 set diffopt=filler,vertical
 set encoding=utf-8
@@ -55,57 +59,53 @@ set mouse=a
 set nobackup
 set noshowmode
 set noswapfile
+set nowrap
 set number
 set scrolljump=5
 set scrolloff=3
-set sidescroll=5
 set shell=zsh
-set shortmess+=acoOtT
-set showbreak=↵
-set splitright
-set synmaxcol=800
-set tags=./tags;
+set sidescroll=5
+set shortmess+=c
+set synmaxcol=240
 set ttimeout
 set ttimeoutlen=100
-" }}}
 
-" search & complete {{{
-set completeopt=menuone,noselect
-set hlsearch
-set ignorecase
-set incsearch
-set magic
-set smartcase
-" }}}
-
-" wildmenu {{{
-set wildmenu
-set wildmode=list:longest
-
-set wildignore+=*.hg,*.git,*.svn               " Version control
-set wildignore+=*aux,*.out,*.toc               " LaTeX intermediate files
-set wildignore+=*.bmp,*.gif,*.jpg,*.jpeg,*.png " binary images
-set wildignore+=*.o,*.obj,*.exe,*.hi,*.dll     " compiled object files
-set wildignore+=*spl                           " compiled spelling word lists
-set wildignore+=*sw?                           " Vim swap files
-set wildignore+=*DS_Store                      " OSX bullshit
-set wildignore+=*.luac                         " Lua byte code
-set wildignore+=*.pyc                          " Python byte code
-set wildignorecase
-" }}}
-
-" formatting & whitespace {{{
-set autoindent
-set backspace=eol,indent,start
+" formatting & whitespace
 set expandtab
 set formatoptions=cqj
 set linebreak
 set list
-set listchars=tab:▷•,trail:•,nbsp:⋅
+set listchars=tab:▷\ ,trail:•,nbsp:⋅
 set shiftwidth=4
+set showbreak=↵
 set smarttab
 set textwidth=80
-" }}}
+
+" completion
+set complete-=i " disable included files completion
+set complete-=t " disable tags completion
+set completeopt=menuone,noselect
+
+" search
+set hlsearch
+set ignorecase
+set incsearch
+set smartcase
+
+" wildmenu
+set wildmenu
+set wildmode=list:longest
+
+set wildignore+=*.bmp,*.gif,*.jpg,*.jpeg,*.png " binary image files
+set wildignore+=*.hg,*.git,*.svn               " Version control
+set wildignore+=*.luac                         " Lua byte code
+set wildignore+=*.o,*.obj,*.exe,*.hi,*.dll     " compiled object files
+set wildignore+=*.pyc                          " Python byte code
+set wildignore+=*DS_Store                      " OSX bullshit
+set wildignore+=*aux,*.out,*.toc               " LaTeX intermediate files
+set wildignore+=*spl                           " compiled spelling word lists
+set wildignore+=*sw?                           " Vim swap files
+set wildignorecase
 
 " }}}
 
@@ -113,43 +113,14 @@ set textwidth=80
 
 let mapleader=","
 
-" auto-pairs {{{
-let g:AutoPairsMapCR = 0
+" auto-pairs
 let g:AutoPairsMultilineClose = 0
-" }}}
 
-" fugitive {{{
-nnoremap <leader>gs  :Gstatus<cr>
-nnoremap <leader>gcm :Gcommit -v -q<cr>
-nnoremap <leader>gco :Gread %<cr>
-nnoremap <leader>gia :Gwrite<cr>
-" }}}
+" completor
+let g:completor_complete_options = 'menuone,noselect'
+let g:completor_gocode_binary = expand('~/go/bin/gocode')
 
-" gutentags {{{
-let g:gutentags_cache_dir = "~/.cache/gutentags"
-let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js']
-" }}}
-
-" fzf {{{
-nnoremap <leader>f :Files<cr>
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-nnoremap <leader>gf :GFiles?<cr>
-nnoremap <leader><space> :Buffers<cr>
-
-inoremap <c-x><c-f> <plug>(fzf-complete-path)
-inoremap <c-x><c-k> <plug>(fzf-complete-word)
-inoremap <c-x><c-l> <plug>(fzf-complete-line)
-
-nnoremap <leader>rg :Rg<space>
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%', '?'),
-  \   <bang>0)
-
+" fzf
 let g:fzf_colors = {
   \ 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -165,18 +136,32 @@ let g:fzf_colors = {
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'],
   \ }
-" }}}
 
-" vim-go {{{
+nnoremap <silent> <leader><space> :Buffers<cr>
+nnoremap <silent> <leader>? :GFiles?<cr>
+nnoremap <silent> <leader>F :GFiles<cr>
+nnoremap <silent> <leader>f :Files<cr>
+nnoremap <silent> <leader>g :Rg<cr>
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%', '?'),
+  \   <bang>0)
+
+" vim-go
 let g:go_addtags_transform = "camelcase"
 let g:go_auto_type_info = 1
 let g:go_fmt_command = "goimports"
 let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
-let g:go_highlight_types = 1
-" }}}
 
-" lightline {{{
+" gutentags
+let g:gutentags_cache_dir = "~/.cache/gutentags"
+let g:gutentags_ctags_exclude = ['*.css', '*.json', '*.html', '*.md', '*.min.js', '*.txt', '*.xml']
+
+" lightline
 let g:lightline = {
   \ 'colorscheme': 'onedark',
   \ 'active': {
@@ -198,76 +183,77 @@ function! LightlineFugitive() abort
     let l:branch = fugitive#head()
     return l:branch ==# '' ? '' : printf(' %s', branch)
 endfunction
-" }}}
 
-" mu-complete {{{
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#chains = {
-  \ 'default':  ['ulti', 'omni'],
-  \ 'markdown': ['ulti', 'dict', 'c-n'],
-  \ 'sql': ['ulti', 'c-n'],
-  \ }
-let g:mucomplete#can_complete = {
-  \ 'default': {
-  \    'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|\.\)$' }
-  \ }
-  \ }
+" mu-complete
+" let g:mucomplete#enable_auto_at_startup = 1
 
-imap <silent> <expr> <cr> OmniCR()
+" let g:mucomplete#chains = {}
+" let g:mucomplete#chains.default   = ['ulti', 'omni', 'keyp']
+" let g:mucomplete#chains.markdown  = ['ulti', 'keyp', 'dict']
 
-function! OmniCR() abort
-    return pumvisible()
-        \ ? "\<c-r>=UltiSnips#ExpandSnippetOrJump()\<cr>"
-        \ : "\<plug>(MUcompleteCR)\<plug>AutoPairsReturn"
-endfunction
-" }}}
+" let g:mucomplete#chains.php       = ['ulti']
+" let g:mucomplete#chains.gitcommit = []
 
-" ultisnips {{{
-let g:UltiSnipsExpandTrigger = "<nop>"
+" let g:mucomplete#can_complete = {}
+" let g:mucomplete#can_complete.default = {
+"   \ 'keyp': { t -> t =~# '\k$' },
+"   \ 'omni': { t -> !empty(&l:omnifunc) && t =~# '\k\+\(\.\|->\|::\)\k*$' },
+"   \ }
+
+" terraform
+let g:terraform_fmt_on_save=1
+
+" ultisnips
+let g:UltiSnipsExpandTrigger = "<NUL>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-" }}}
+let g:UltiSnipsSnippetDirectories = ["/Users/crdueck/UltiSnips"]
+
+inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+inoremap <expr> <cr> pumvisible() ? "\<c-r>=UltiSnips#ExpandSnippet()\<cr>" : "\<cr>"
 
 " }}}
 
-" Key mappings {{{
+" Key Mappings {{{
+
+" force save
+cnoremap ww w !sudo tee > /dev/null %
 
 " force quit
 cnoremap qq qa!
 
-" keep selection while indenting
-xnoremap < <gv
-xnoremap > >gv
-
-" search/replace block
+" search/replace selection
 xnoremap gs y:s/<c-r>"//g<left><left>
 xnoremap Gs y:%s/<c-r>"//g<left><left>
 
-" search/replace in block
-xnoremap gis :s//g<left><left>
-
-" close quickfix and location list
-nnoremap <leader>cl :cclose :lclose
+" search/replace in current line
+nnoremap gs :s//g<left><left>
 
 " clear search highlighting
 nnoremap <silent> <space> :nohlsearch<cr>
 
-" jump between parenthese pairs with <tab>
-nnoremap <tab> %
+" cycle through buffers
+nnoremap <silent> <tab> :bnext<cr>
+nnoremap <silent> <s-tab> :bprev<cr>
 
 " save 1,000,000 keystrokes
 nnoremap ; :
 " preserve ; functionality
 nnoremap ;; ;
 
+" more intuitive wrap-aware movement
+nnoremap j gj
+nnoremap k gk
+
 " remove trailing whitespace
 nnoremap <leader>w :call Preserve("%s/\\s\\+$//e")<cr>
 
 function! Preserve(command) abort
-    " save last search and cursor position
+    " save search history and cursor position
     let s = @
-    let l = line(".")
     let c = col(".")
+    let l = line(".")
     " do the thing
     execute a:command
     " restore search history and cursor position
@@ -275,42 +261,19 @@ function! Preserve(command) abort
     call cursor(l, c)
 endfunction
 
-" go to older change
-nnoremap g; g;zz
-" go to newer change
-nnoremap g, g,zz
-
-" go to last position
-nnoremap '' ''zz
-
-" search/replace current line
-nnoremap gs :s//g<left><left>
-
-" vertical movement with wrap awareness
-nnoremap j gj
-nnoremap k gk
-
-" center search results
-nnoremap n nzzzv
-nnoremap N Nzzzv
-
-" prevent 'x' and 'c' from clobbering the default yank register
-nnoremap x "_x
-nnoremap c "_c
-
 " make 'Y' consistent with 'C' and 'D'
 nnoremap Y y$
 
-" execute 'q' macro instead of the annoying Ex mode
+" execute 'q' macro instead of the rarely desired Ex mode
 nnoremap Q @q
 
-if &diff
-    " prev/next diff
-    nunmap n
-    nunmap N
-    nnoremap n [czz
-    nnoremap N ]czz
-endif
+nmap <leader>si :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+    if !exists("*synstack")
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
 
 " }}}
 
@@ -319,17 +282,24 @@ endif
 autocmd FileType help wincmd L
 autocmd InsertLeave * set nopaste
 
+augroup ft_dockerfile
+    autocmd!
+    autocmd BufEnter,BufNewFile Dockerfile* set filetype=dockerfile
+augroup END
+
 augroup ft_golang
     autocmd!
     autocmd FileType go nmap <leader>b <plug>(go-build)
     autocmd FileType go nmap <leader>r <plug>(go-run)
     autocmd FileType go nmap <leader>t <plug>(go-test)
+    autocmd FileType go nmap <leader>tf <plug>(go-test-func)
+    autocmd FileType go nmap <leader>tc <plug>(go-test-compile)
 augroup END
 
 augroup ft_haskell
     autocmd!
     autocmd BufEnter *.dump-simpl set filetype=haskell
-    autocmd FileType haskell setlocal makeprg=stack\ repl
+    autocmd FileType haskell setlocal makeprg=stack
     autocmd FileType haskell nnoremap <leader>b :!stack build<cr>
     autocmd FileType haskell nnoremap <leader>r :!stack runghc %<cr>
     autocmd FileType haskell nnoremap <leader>t :!stack test<cr>
@@ -349,18 +319,13 @@ augroup END
 
 augroup ft_php
     autocmd!
-    autocmd BufNewFile,BufRead *.phps set filetype=php
+    autocmd BufEnter,BufNewFile *.phps set filetype=php
 augroup END
 
 augroup ft_python
     autocmd!
     autocmd FileType python nnoremap <leader>r :!python3 %<cr>
-augroup END
-
-augroup ft_tex
-    autocmd!
-    autocmd FileType tex setlocal makeprg=pdflatex
-    autocmd FileType tex setlocal formatoptions+=t
+    autocmd FileType python nnoremap <leader>t :!python3 -m unittest<cr>
 augroup END
 
 " }}}
