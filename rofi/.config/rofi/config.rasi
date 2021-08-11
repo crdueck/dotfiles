@@ -1,0 +1,11 @@
+configuration {
+	width: 32;
+	lines: 5;
+	columns: 1;
+	location: 0;
+	hide-scrollbar: true;
+	color-normal: "#181818, #d8d8d8, #181818, #181818, #ba8baf";
+	color-urgent: "#181818, #585858, #181818, #181818, #d8d8d8";
+	color-active: "#181818, #ba8baf, #181818, #181818, #d8d8d8";
+	color-window: "#181818, #181818, #181818, #181818, #d8d8d8";
+}
