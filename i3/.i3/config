@@ -5,7 +5,7 @@
 # This config file uses bindsym and was written for the DVORAK layout.
 
 # Theme
-set $focus #989898
+set $focus #7cafc2
 set $unfocus #181818
 
 client.focused          $focus $focus $focus $focus

@@ -6,15 +6,14 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-" Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
-Plug 'lifepillar/vim-mucomplete'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'maralla/completor.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tommcdo/vim-lion'
 Plug 'tpope/vim-abolish'
@@ -23,6 +22,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
 
@@ -115,6 +115,11 @@ let g:AutoPairsMapCR = 0
 let g:AutoPairsMultilineClose = 0
 " }
 
+" completor {
+let g:completor_complete_options = 'menuone,noselect'
+let g:completor_gocode_binary = expand('~/go/bin/gocode')
+" }
+
 " fugitive
 nnoremap <leader>gc  :Gcommit -v -q<cr>
 nnoremap <leader>gco :Gcheckout<space>
@@ -150,6 +155,7 @@ let g:go_fmt_command = "goimports"
 " }
 
 " gutentags
+let g:gutentags_cache_dir = "~/.cache/gutentags"
 let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js']
 " }
 
@@ -182,31 +188,15 @@ function! LightlineFugitive() abort
 endfunction
 " }
 
-" mu-complete
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#chains = {
-    \ 'default':  ['ulti', 'omni', 'keyp' ],
-    \ 'markdown': ['ulti', 'dict', 'keyp' ],
-    \ }
-
-let g:mucomplete#can_complete = {
-    \ 'default': {
-    \    'omni': { t -> strlen(&l:omnifunc) > 0 && t =~# '\%(\k\|\.\)$' }
-    \ }
-    \ }
-
-function! OmniCR() abort
-    return pumvisible()
-        \ ? "\<c-r>=UltiSnips#ExpandSnippetOrJump()\<cr>"
-        \ : "\<plug>(MUcompleteCR)\<cr>"
-endfunction
-
-" imap <silent> <expr> <cr> OmniCR()
-" }
-
 " ultisnips {
-let g:UltiSnipsExpandTrigger="<nop>"
-" }
+let g:UltiSnipsExpandTrigger="<NUL>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+inoremap <expr> <cr> pumvisible() ? "\<c-r>=UltiSnips#ExpandSnippet()\<cr>" : "\<cr>"
+
 " }
 
 " Key Mappings {
