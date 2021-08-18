@@ -4,6 +4,8 @@
 #
 # This config file uses bindsym and was written for the DVORAK layout.
 
+exec_always --no-startup-id ~/bin/polybar.sh
+
 # Theme
 set $focus #7cafc2
 set $unfocus #181818
@@ -34,10 +36,7 @@ focus_follows_mouse no
 floating_modifier Mod1
 
 # start a terminal
-bindsym Mod1+Return exec --no-startup-id urxvtc
-
-# start a terminal in a tmux session
-bindsym Mod1+Shift+Return exec --no-startup-id ~/bin/tmux-shell.sh
+bindsym Mod1+Return exec --no-startup-id alacritty
 
 # kill focused window
 bindsym Mod1+Shift+q kill
@@ -86,7 +85,7 @@ bindsym Mod1+f focus mode_toggle
 bindsym Mod1+a focus parentspace
 
 # focus the child container
-#bindsym Mod1+d focus child
+bindsym Mod1+d focus child
 
 # move the currently focused window to the scratchpad
 bindsym Mod1+Shift+minus move scratchpad
@@ -139,7 +138,7 @@ bindsym Mod1+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym Mod1+Shift+Escape exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window (can also use the mouse)
+# resize windows mode
 mode "resize" {
         bindsym $left       resize shrink width 10 px or 10 ppt
         bindsym $down       resize grow height 10 px or 10 ppt
@@ -158,5 +157,3 @@ bindsym XF86AudioPlay exec --no-startup-id mpc toggle
 bindsym XF86AudioStop exec --no-startup-id mpc stop
 bindsym XF86AudioPrev exec --no-startup-id mpc prev
 bindsym XF86AudioNext exec --no-startup-id mpc next
-
-exec_always --no-startup-id ~/bin/polybar.sh
