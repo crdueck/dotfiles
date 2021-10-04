@@ -1,49 +1,48 @@
-" Preamble {
+" Preamble {{{
 call plug#begin('~/.vim/bundle')
 
 Plug 'SirVer/ultisnips'
-Plug 'arcticicestudio/nord-vim'
-Plug 'chriskempson/base16-vim'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'dense-analysis/ale'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
+Plug 'maximbaz/lightline-ale'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf.vim'
-Plug 'justinmk/vim-sneak'
+Plug 'kaicataldo/material.vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'maralla/completor.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tommcdo/vim-lion'
-Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
-Plug 'w0rp/ale'
 
 call plug#end()
 
 let mapleader=","
-colorscheme nord
-" }
 
-" General {
+let g:material_theme_style = 'darker'
+colorscheme material
+" }}}
+
+" General {{{
 set autoread
 set background=dark
 set diffopt=filler,vertical
 set encoding=utf-8
-set grepprg=rg\ --vimgrep
 set grepformat^=%f:%l:%c:%m
+set grepprg=rg\ --vimgrep
 set hidden
 set history=1000
 set lazyredraw
 set mouse=a
 set nobackup
+set noshowmode
 set noswapfile
 set number
 set pastetoggle=<F12>
@@ -52,7 +51,6 @@ set scrolloff=3
 set shell=zsh
 set shortmess+=c
 set showbreak=↵
-set noshowmode
 set splitright
 set t_Co=256
 set tags=./tags;
@@ -68,9 +66,8 @@ set ignorecase
 set incsearch
 set magic
 set smartcase
-" }
 
-" Wildmenu {
+" Wildmenu
 set wildmenu
 set wildmode=list:longest
 
@@ -86,15 +83,12 @@ set wildignore+=mgrations                       " Django migrations
 set wildignore+=*.pyc                           " Python byte code
 set wildignore+=target                          " SBT target directories
 set wildignorecase
-" }
 
-" Folding {
+" Folding
 set foldmethod=manual
-set foldnestmax=3
 set nofoldenable
-" }
 
-" Formatting & Whitespace {
+" Formatting & Whitespace
 set autoindent
 set backspace=eol,indent,start
 set expandtab
@@ -106,89 +100,69 @@ set shiftwidth=4
 set smarttab
 set textwidth=80
 set nowrap
-" }
+" }}}
 
-" Plugins {
+" Plugins {{{
 
-" auto-pairs {
+" auto-pairs
 let g:AutoPairsMapCR = 0
 let g:AutoPairsMultilineClose = 0
-" }
 
-" completor {
+" completor
 let g:completor_complete_options = 'menuone,noselect'
 let g:completor_gocode_binary = expand('~/go/bin/gocode')
-" }
-
-" fugitive
-nnoremap <leader>gc  :Gcommit -v -q<cr>
-nnoremap <leader>gco :Gcheckout<space>
-nnoremap <leader>gia :Gwrite<cr>
-nnoremap <leader>gwd :Gdiff<cr>
-nnoremap <leader>gws :Gstatus<cr>
-" }
 
 " fzf
 nnoremap <leader>f :Files<cr>
 nnoremap <leader>? :GFiles?<cr>
 nnoremap <leader><space> :Buffers<cr>
 
-let g:fzf_action = {
-      \ 'ctrl-s': 'split',
-      \ 'ctrl-v': 'vsplit'
-      \ }
-
-nnoremap <leader>rg :Rg<space>
-command! -bang -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-    \   <bang>0 ? fzf#vim#with_preview('up:60%')
-    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \   <bang>0)
-" }
+let g:fzf_action = { 'ctrl-s': 'split', 'ctrl-v': 'vsplit' }
 
 " vim-go
 let g:go_highlight_types = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_extra_types = 1
 let g:go_fmt_command = "goimports"
-" }
 
 " gutentags
 let g:gutentags_cache_dir = "~/.cache/gutentags"
 let g:gutentags_ctags_exclude = ['*.css', '*.html', '*.js']
-" }
 
 " lightline
 set laststatus=2
 let g:lightline = {
-      \ 'colorscheme': 'nord',
+      \ 'colorscheme': 'material_vim',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'filename' ],
-      \             [ 'git-branch', 'modified' ] ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [ 'filetype' ] ]
+      \             [ 'filename', 'modified' ],
+      \             [ 'git-branch'] ],
+      \   'right': [ [ 'percent' ] ,
+      \              [ 'filetype' ],
+      \              [ 'linter_errors', 'linter_warnings', 'linter_infos' ] ]
       \ },
       \ 'component_function': {
-      \   'filetype': 'FileTypeWithDevIcon',
       \   'git-branch': 'LightlineFugitive',
+      \ },
+      \ 'component_expand': {
+      \   'linter_infos': 'lightline#ale#infos',
+      \   'linter_warnings': 'lightline#ale#warnings',
+      \   'linter_errors': 'lightline#ale#errors',
+      \   'linter_ok': 'lightline#ale#ok',
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
 function! LightlineFugitive() abort
-    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && exists('*fugitive#head')
-      let branch = fugitive#head()
-      return branch !=# '' ?  ' '.branch : ''
+    if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && exists('*FugitiveHead')
+        let branch = FugitiveHead()
+        return branch !=# "" ? " " . branch : ""
     endif
     return ''
 endfunction
-" }
 
-" ultisnips {
+" ultisnips
 let g:UltiSnipsExpandTrigger="<NUL>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
@@ -197,9 +171,9 @@ inoremap <expr> <tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 inoremap <expr> <cr> pumvisible() ? "\<c-r>=UltiSnips#ExpandSnippet()\<cr>" : "\<cr>"
 
-" }
+" }}}
 
-" Key Mappings {
+" Key Mappings {{{
 
 " force quit
 cnoremap qq qa!
@@ -207,6 +181,11 @@ cnoremap qq qa!
 " search/replace visual selection
 xnoremap gs y:s/<c-r>"//g<left><left>
 xnoremap Gs y:%s/<c-r>"//g<left><left>
+
+nnoremap <c-h> <c-w>h<cr>
+nnoremap <c-l> <c-w>l<cr>
+nnoremap <c-j> <c-w>j<cr>
+nnoremap <c-k> <c-w>k<cr>
 
 " save 1,000,000 keystrokes
 nnoremap ; :
@@ -244,9 +223,9 @@ nnoremap <silent> <space> :nohlsearch<cr>
 
 " show last search results in quickfix window
 nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen 6<cr>
-" }
+" }}}
 
-" Autocommands {
+" Autocommands {{{
 autocmd FileType help wincmd L
 autocmd InsertLeave * set nopaste
 
@@ -264,8 +243,6 @@ augroup ft_haskell
     autocmd FileType haskell nnoremap <leader>r :make runghc %<cr>
     autocmd FileType haskell nnoremap <leader>t :make test<cr>
     autocmd FileType haskell setlocal makeprg=stack
-    " autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
     autocmd FileType haskell let g:ale_enabled=0
 augroup END
 
@@ -286,4 +263,4 @@ augroup ft_tex
     autocmd FileType tex nnoremap <leader>b :!pdflatex %<cr>
     autocmd FileType tex setlocal formatoptions+=t
 augroup END
-" }
+" }}}
