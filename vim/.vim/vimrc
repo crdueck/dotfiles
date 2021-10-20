@@ -7,7 +7,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
-Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
@@ -16,8 +16,6 @@ Plug 'joshdick/onedark.vim'
 Plug 'junegunn/fzf.vim' | Plug '/usr/local/opt/fzf'
 Plug 'justinmk/vim-sneak'
 Plug 'ludovicchabant/vim-gutentags'
-" Plug 'lvht/phpcd.vim', { 'for': 'php', 'do': 'composer install' }
-Plug 'majutsushi/tagbar'
 Plug 'maralla/completor.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'tommcdo/vim-lion'
@@ -27,7 +25,6 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 Plug 'w0rp/ale'
 
@@ -79,6 +76,7 @@ set listchars=tab:▷\ ,trail:•,nbsp:⋅
 set shiftwidth=4
 set showbreak=↵
 set smarttab
+set tabstop=4
 set textwidth=80
 
 " completion
@@ -121,27 +119,10 @@ let g:completor_complete_options = 'menuone,noselect'
 let g:completor_gocode_binary = expand('~/go/bin/gocode')
 
 " fzf
-let g:fzf_colors = {
-  \ 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'],
-  \ }
-
 nnoremap <silent> <leader><space> :Buffers<cr>
-nnoremap <silent> <leader>? :GFiles?<cr>
-nnoremap <silent> <leader>F :GFiles<cr>
 nnoremap <silent> <leader>f :Files<cr>
-nnoremap <silent> <leader>g :Rg<cr>
+nnoremap <silent> <leader>g :GFiles?<cr>
+nnoremap <silent> <leader>s :Rg<cr>
 
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
@@ -156,6 +137,7 @@ let g:go_auto_type_info = 1
 let g:go_fmt_command = "goimports"
 let g:go_highlight_extra_types = 1
 let g:go_highlight_operators = 1
+let g:go_metalinter_command = "golangci-lint run -D errcheck"
 
 " gutentags
 let g:gutentags_cache_dir = "~/.cache/gutentags"
@@ -184,22 +166,6 @@ function! LightlineFugitive() abort
     return l:branch ==# '' ? '' : printf(' %s', branch)
 endfunction
 
-" mu-complete
-" let g:mucomplete#enable_auto_at_startup = 1
-
-" let g:mucomplete#chains = {}
-" let g:mucomplete#chains.default   = ['ulti', 'omni', 'keyp']
-" let g:mucomplete#chains.markdown  = ['ulti', 'keyp', 'dict']
-
-" let g:mucomplete#chains.php       = ['ulti']
-" let g:mucomplete#chains.gitcommit = []
-
-" let g:mucomplete#can_complete = {}
-" let g:mucomplete#can_complete.default = {
-"   \ 'keyp': { t -> t =~# '\k$' },
-"   \ 'omni': { t -> !empty(&l:omnifunc) && t =~# '\k\+\(\.\|->\|::\)\k*$' },
-"   \ }
-
 " terraform
 let g:terraform_fmt_on_save=1
 
@@ -218,7 +184,7 @@ inoremap <expr> <cr> pumvisible() ? "\<c-r>=UltiSnips#ExpandSnippet()\<cr>" : "\
 " Key Mappings {{{
 
 " force save
-cnoremap ww w !sudo tee > /dev/null %
+cnoremap w! w !sudo tee > /dev/null %
 
 " force quit
 cnoremap qq qa!
