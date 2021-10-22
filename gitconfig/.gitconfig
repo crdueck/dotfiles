@@ -19,10 +19,14 @@
 [mergetool "vimdiff"]
     path = /usr/local/bin/vimdiff
 
-[url "https://github.com/Wattpad/"]
+[url "ssh://git@github.com/Wattpad/"]
 	insteadOf = "wp:"
 
-[url "https://github/"]
+[url "ssh://git@github.com/"]
 	insteadOf = "gh:"
+
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+
 [push]
 	default = current
