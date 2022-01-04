@@ -13,27 +13,21 @@ function _G.xmap(...) map("x", ...) end
 -- force quit
 cmap("qq", "qa!")
 
--- replace visual selection in line
-xmap("gs", "y:s/<c-r>\"//g<left><left>")
-
 -- replace visual selection in file
-xmap("Gs", "y:%s/<c-r>\"//g<left><left>")
+xmap("gs", "y:%s/<c-r>\"//g<left><left>")
 
 -- save thousands of keystrokes
 nmap(";", ":")
 
--- preserve ';' functionality
-nmap(";;", ";")
-
 -- better window movement
-nmap("<c-h>", "<c-w>h")
-nmap("<c-j>", "<c-w>j")
-nmap("<c-k>", "<c-w>k")
-nmap("<c-l>", "<c-w>l")
+-- nmap("<c-h>", "<c-w>h")
+-- nmap("<c-j>", "<c-w>j")
+-- nmap("<c-k>", "<c-w>k")
+-- nmap("<c-l>", "<c-w>l")
 
 -- better directional movement
-nmap("j", "gj")
-nmap("k", "gk")
+nmap("j", "v:count == 0 ? 'gj' : 'j'", { silent = true, expr = true })
+nmap("k", "v:count == 0 ? 'gk' : 'k'", { silent = true, expr = true })
 
 -- avoid clobbering yank register
 nmap("x", "\"_x")
