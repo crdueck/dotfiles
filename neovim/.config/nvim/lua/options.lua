@@ -1,5 +1,8 @@
 local opt = vim.opt
 
+-- General
+opt.clipboard = "unnamedplus"
+opt.completeopt = "menuone,noselect"
 opt.hidden = true
 opt.mouse = "a"
 opt.number = true
@@ -9,9 +12,6 @@ opt.shortmess = opt.shortmess + "c"
 opt.showmode = false
 opt.splitright = true
 opt.swapfile = false
-
--- Completion
-opt.completeopt = "menuone,noselect"
 
 -- Formatting
 opt.formatoptions = "crqj"
