@@ -9,6 +9,16 @@ require("packer").startup(function(use)
     use "wbthomason/packer.nvim"
 
     use {
+        "lewis6991/gitsigns.nvim",
+        requires = {
+            'nvim-lua/plenary.nvim'
+        },
+        config = function()
+            require("config.gitsigns")
+        end
+    }
+
+    use {
         "alexghergh/nvim-tmux-navigation",
         config = function()
             require("config.nvim-tmux-navigation")
@@ -99,6 +109,7 @@ require("packer").startup(function(use)
     use "tpope/vim-commentary"
     use "tpope/vim-fugitive"
     use "tpope/vim-repeat"
+    use "tpope/vim-rhubarb"
     use "tpope/vim-surround"
     use "tpope/vim-vinegar"
 end)

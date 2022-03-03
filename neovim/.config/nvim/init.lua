@@ -1,6 +1,6 @@
 vim.g.mapleader = ","
 vim.g.netrw_fastbrowse = 0
 
-require("settings")
-require("mappings")
+require("options")
+require("keymaps")
 require("plugins")

@@ -19,12 +19,6 @@ xmap("gs", "y:%s/<c-r>\"//g<left><left>")
 -- save thousands of keystrokes
 nmap(";", ":")
 
--- better window movement
--- nmap("<c-h>", "<c-w>h")
--- nmap("<c-j>", "<c-w>j")
--- nmap("<c-k>", "<c-w>k")
--- nmap("<c-l>", "<c-w>l")
-
 -- better directional movement
 nmap("j", "v:count == 0 ? 'gj' : 'j'", { silent = true, expr = true })
 nmap("k", "v:count == 0 ? 'gk' : 'k'", { silent = true, expr = true })
