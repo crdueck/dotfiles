@@ -13,9 +13,9 @@ cmp.setup({
             with_text = false,
             menu = {
                 buffer = "buf",
+                luasnip = "snip",
                 nvim_lsp = "lsp",
                 nvim_lua = "vim",
-                luasnip  = "snip",
             }
         })
     },
