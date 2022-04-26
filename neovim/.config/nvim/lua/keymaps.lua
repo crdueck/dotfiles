@@ -1,14 +1,6 @@
-local function map(mode, lhs, rhs, opts)
-    local options = { noremap = true }
-    if opts then
-        options = vim.tbl_extend("force", options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
-function _G.cmap(...) map("c", ...) end
-function _G.nmap(...) map("n", ...) end
-function _G.xmap(...) map("x", ...) end
+function _G.cmap(...) vim.keymap.set("c", ...) end
+function _G.nmap(...) vim.keymap.set("n", ...) end
+function _G.xmap(...) vim.keymap.set("x", ...) end
 
 -- force quit
 cmap("qq", "qa!")

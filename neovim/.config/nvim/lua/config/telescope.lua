@@ -9,8 +9,10 @@ require("telescope").setup({
     }
 })
 
-nmap("<leader>b", "<cmd>Telescope git_branches<cr>")
-nmap("<leader>f", "<cmd>Telescope find_files<cr>")
-nmap("<leader>g", "<cmd>Telescope git_status<cr>")
-nmap("<leader>s", "<cmd>Telescope live_grep<cr>")
-nmap("<leader><space>", "<cmd>Telescope buffers<cr>")
+telescope = require("telescope.builtin")
+
+nmap("<leader>b", telescope.git_branches)
+nmap("<leader>f", telescope.find_files)
+nmap("<leader>g", telescope.git_status)
+nmap("<leader>s", telescope.live_grep)
+nmap("<leader><space>", telescope.buffers)
