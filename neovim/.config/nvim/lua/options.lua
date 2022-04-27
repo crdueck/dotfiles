@@ -3,7 +3,6 @@ local opt = vim.opt
 -- General
 opt.clipboard = opt.clipboard + "unnamedplus"
 opt.completeopt = "menuone,noselect"
-opt.hidden = true
 opt.mouse = "a"
 opt.number = true
 opt.scrolljump = 5
