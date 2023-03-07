@@ -9,6 +9,7 @@ require("telescope").setup({
     }
 })
 
+require('telescope').load_extension('luasnip')
 telescope = require("telescope.builtin")
 
 nmap("<leader>b", telescope.git_branches)

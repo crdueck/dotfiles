@@ -6,7 +6,7 @@ function _G.xmap(...) vim.keymap.set("x", ...) end
 cmap("qq", "qa!")
 
 -- replace visual selection in file
-xmap("gs", "y:%s/<c-r>\"//g<left><left>")
+-- xmap("gs", "y:%s/<c-r>\"//g<left><left>")
 
 -- save thousands of keystrokes
 nmap(";", ":")

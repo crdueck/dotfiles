@@ -1,76 +1,95 @@
-local fn = vim.fn
-local install_path = fn.stdpath("data").."/site/pack/packer/start/packer.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path})
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
 
-require("packer").startup(function(use)
-    use "wbthomason/packer.nvim"
+vim.opt.rtp:prepend(lazypath)
 
-    use {
+require("lazy").setup({
+    {
         "lewis6991/gitsigns.nvim",
-        requires = {
-            'nvim-lua/plenary.nvim'
-        },
+        dependencies = { 'nvim-lua/plenary.nvim' },
         config = function()
             require("config.gitsigns")
         end
-    }
+    },
 
-    use {
+    {
         "alexghergh/nvim-tmux-navigation",
         config = function()
             require("config.nvim-tmux-navigation")
         end
-    }
+    },
 
-    use {
-        "ggandor/lightspeed.nvim",
+    {
+        "ggandor/leap.nvim",
         config = function()
-            require("config.lightspeed")
+            require("config.leap")
         end
-    }
+    },
 
-    use {
+    {
         "neovim/nvim-lspconfig",
         config = function()
             require("config.lspconfig")
         end
-    }
+    },
 
-    use {
+    {
         "nvim-lualine/lualine.nvim",
         config = function()
             require("config.lualine")
         end
-    }
+    },
 
-    use {
+    {
+        "nvim-neotest/neotest",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "antoinemadec/FixCursorHold.nvim",
+            "nvim-neotest/neotest-go",
+        },
+        config = function()
+            require("config.neotest")
+        end
+    },
+
+    {
         "shaunsingh/nord.nvim",
         config = function()
             require("config.nord")
         end
-    }
+    },
 
-    use {
+    {
         "windwp/nvim-autopairs",
+        event = "InsertEnter",
         config = function()
             require("config.autopairs")
         end
-    }
+    },
 
-    use {
+    {
         "L3MON4D3/LuaSnip",
-        requires = { "rafamadriz/friendly-snippets" },
+        event = "InsertEnter",
+        dependencies = { "rafamadriz/friendly-snippets" },
         config = function()
             require("luasnip.loaders.from_vscode").lazy_load()
         end
-    }
+    },
 
-    use {
+    {
         "hrsh7th/nvim-cmp",
-        requires = {
+        event = "InsertEnter",
+        dependencies = {
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-nvim-lua",
@@ -80,36 +99,38 @@ require("packer").startup(function(use)
         config = function()
             require("config.cmp")
         end
-    }
+    },
 
-    use {
+    {
         "nvim-telescope/telescope.nvim",
-        requires = { "nvim-lua/plenary.nvim" },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "benfowler/telescope-luasnip.nvim",
+        },
         config = function()
             require("config.telescope")
         end
-    }
+    },
 
-    use {
+    {
         "nvim-telescope/telescope-fzf-native.nvim",
-        run = "make",
+        build = "make",
         config = function()
             require("telescope").load_extension("fzf")
         end
-    }
+    },
 
-    use {
+    {
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
+        build = ":TSUpdate",
         config = function()
             require("config.treesitter")
         end
-    }
+    },
 
-    use "tpope/vim-commentary"
-    use "tpope/vim-fugitive"
-    use "tpope/vim-repeat"
-    use "tpope/vim-rhubarb"
-    use "tpope/vim-surround"
-    use "tpope/vim-vinegar"
-end)
+    "tpope/vim-commentary",
+    "tpope/vim-fugitive",
+    "tpope/vim-rhubarb",
+    "tpope/vim-surround",
+    "tpope/vim-vinegar",
+})
