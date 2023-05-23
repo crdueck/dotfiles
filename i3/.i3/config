@@ -42,7 +42,8 @@ bindsym Mod1+Return exec --no-startup-id alacritty
 bindsym Mod1+Shift+q kill
 
 # start rofi
-bindsym Mod1+p exec --no-startup-id rofi -show run
+bindsym Mod1+p   exec --no-startup-id rofi -show run
+bindsym Mod1+Tab exec --no-startup-id rofi -show window
 
 # change focus
 bindsym Mod1+$left focus left
