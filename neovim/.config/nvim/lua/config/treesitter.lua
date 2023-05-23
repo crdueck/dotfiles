@@ -3,6 +3,18 @@ require("nvim-treesitter.configs").setup({
         enable = true
     },
     indent = {
-        enable = true
-    }
+        enable = false
+    },
+    ensure_installed = {
+        "bash",
+        "c",
+        "dockerfile",
+        "go",
+        "haskell",
+        "json",
+        "lua",
+        "markdown",
+        "python",
+        "yaml",
+    },
 })

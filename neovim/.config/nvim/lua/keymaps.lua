@@ -1,14 +1,9 @@
-local function map(mode, lhs, rhs, opts)
-    local options = { noremap = true }
-    if opts then
-        options = vim.tbl_extend("force", options, opts)
-    end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
+local function cmap(...) vim.keymap.set("c", ...) end
+local function nmap(...) vim.keymap.set("n", ...) end
+local function xmap(...) vim.keymap.set("x", ...) end
 
-function _G.cmap(...) map("c", ...) end
-function _G.nmap(...) map("n", ...) end
-function _G.xmap(...) map("x", ...) end
+-- disable right mouse
+vim.keymap.set({ "c", "n", "x", "i", "s" }, "<RightMouse>", "<nop>")
 
 -- force quit
 cmap("qq", "qa!")
@@ -21,6 +16,10 @@ nmap("<c-h>", "<c-w>h")
 nmap("<c-j>", "<c-w>j")
 nmap("<c-k>", "<c-w>k")
 nmap("<c-l>", "<c-w>l")
+
+-- search/replace visual selection in file
+xmap("gs", "y:%s/<c-r>\"//gI<left><left><left>")
+-- nmap("gs", "*ye:%s/<c-r>\"//gI<left><left><left>")
 
 -- smarter line movement
 nmap("j", "v:count == 0 ? 'gj' : 'j'", { silent = true, expr = true })

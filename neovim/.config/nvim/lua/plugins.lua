@@ -1,95 +1,122 @@
-local fn = vim.fn
-local install_path = fn.stdpath("data").."/site/pack/packer/start/packer.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path})
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable",
+        lazypath,
+    })
 end
 
-require("packer").startup(function(use)
-    use "wbthomason/packer.nvim"
+vim.opt.rtp:prepend(lazypath)
 
-    use {
-        "ggandor/lightspeed.nvim",
+require("lazy").setup({
+    {
+        "lewis6991/gitsigns.nvim",
         config = function()
-            require("config.lightspeed")
+            require("gitsigns").setup()
         end
-    }
+    },
 
-    use {
+    {
+        "ggandor/leap.nvim",
+        config = function()
+            require("leap").add_default_mappings()
+        end
+    },
+
+    {
         "catppuccin/nvim",
-        as = "catppuccin",
+        name = "catppuccin",
         config = function()
-            require("config.catppuccin")
+            require("catppuccin").load()
         end
-    }
+    },
 
-    use {
+    {
         "neovim/nvim-lspconfig",
         config = function()
             require("config.lspconfig")
         end
-    }
+    },
 
-    use {
+    {
         "nvim-lualine/lualine.nvim",
         config = function()
             require("config.lualine")
         end
-    }
+    },
 
-    use {
+    {
         "windwp/nvim-autopairs",
+        event = "InsertEnter",
         config = function()
-            require("config.autopairs")
+            require("nvim-autopairs").setup()
         end
-    }
+    },
 
-    use {
+    {
         "L3MON4D3/LuaSnip",
-        requires = { "rafamadriz/friendly-snippets" },
+        event = "InsertEnter",
+        dependencies = { "rafamadriz/friendly-snippets" },
         config = function()
             require("luasnip.loaders.from_vscode").lazy_load()
         end
-    }
+    },
 
-    use {
+    {
         "hrsh7th/nvim-cmp",
-        requires = {
+        event = "InsertEnter",
+        dependencies = {
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-nvim-lua",
             "hrsh7th/cmp-nvim-lsp",
             "saadparwaiz1/cmp_luasnip",
-            "onsails/lspkind-nvim"
+            "onsails/lspkind-nvim",
         },
         config = function()
             require("config.cmp")
         end
-    }
+    },
 
-    use {
+    {
         "nvim-telescope/telescope.nvim",
-        requires = { "nvim-lua/plenary.nvim" },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "benfowler/telescope-luasnip.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make",
+            },
+        },
+        cmd = "Telescope",
+        keys = {
+            { "<leader>b",       "<cmd>Telescope git_branches<cr>" },
+            { "<leader>f",       "<cmd>Telescope find_files<cr>" },
+            { "<leader>s",       "<cmd>Telescope luasnip<cr>" },
+            { "<leader>/",       "<cmd>Telescope live_grep<cr>" },
+            { "<leader>/",       "<cmd>Telescope grep_string<cr>", mode = "x" },
+            { "<leader><space>", "<cmd>Telescope buffers<cr>" },
+        },
         config = function()
             require("config.telescope")
         end
-    }
+    },
 
-    use {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        run = "make"
-    }
-
-    use {
+    {
         "nvim-treesitter/nvim-treesitter",
-        run = ":TSUpdate",
+        build = ":TSUpdate",
         config = function()
             require("config.treesitter")
         end
-    }
+    },
 
-    use "tpope/vim-commentary"
-    use "tpope/vim-fugitive"
-    use "tpope/vim-repeat"
-    use "tpope/vim-surround"
-    use "tpope/vim-vinegar"
-end)
+    "tpope/vim-commentary",
+    "tpope/vim-fugitive",
+    "tpope/vim-repeat",
+    "tpope/vim-surround",
+    "tpope/vim-vinegar",
+})

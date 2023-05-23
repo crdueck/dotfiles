@@ -1,4 +1,6 @@
-require("telescope").setup({
+local telescope = require("telescope")
+
+telescope.setup({
     defaults = {
         file_ignore_patterns = { "vendor" },
         mappings = {
@@ -9,10 +11,15 @@ require("telescope").setup({
     }
 })
 
-require("telescope").load_extension("fzf")
+telescope.load_extension("fzf")
+telescope.load_extension("luasnip")
 
-nmap("<leader>b", "<cmd>Telescope git_branches<cr>")
-nmap("<leader>f", "<cmd>Telescope find_files<cr>")
-nmap("<leader>g", "<cmd>Telescope git_status<cr>")
-nmap("<leader>s", "<cmd>Telescope live_grep<cr>")
-nmap("<leader><space>", "<cmd>Telescope buffers<cr>")
+-- local builtin = require("telescope.builtin")
+-- local luasnip = telescope.extensions.luasnip
+
+-- nmap("<leader>b", builtin.git_branches)
+-- nmap("<leader>f", builtin.find_files)
+-- nmap("<leader>s", luasnip.luasnip)
+-- nmap("<leader>/", builtin.live_grep)
+-- xmap("<leader>/", builtin.grep_string)
+-- nmap("<leader><space>", builtin.buffers)

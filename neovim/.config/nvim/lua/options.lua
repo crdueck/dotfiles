@@ -1,16 +1,17 @@
 local opt = vim.opt
 
--- General
-opt.clipboard = "unnamedplus"
-opt.completeopt = "menuone,noselect"
-opt.hidden = true
-opt.mouse = "a"
+-- UI
 opt.number = true
 opt.scrolljump = 5
 opt.scrolloff = 5
 opt.shortmess = opt.shortmess + "c"
 opt.showmode = false
 opt.splitright = true
+
+-- General
+opt.clipboard = "unnamedplus"
+opt.hidden = true
+opt.mouse = "a"
 opt.swapfile = false
 
 -- Formatting

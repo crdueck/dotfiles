@@ -1,5 +1,6 @@
 require("lualine").setup({
     options = {
+        globalstatus = true,
         theme = "palenight",
     },
     sections = {
@@ -15,9 +16,9 @@ require("lualine").setup({
             {
                 "diagnostics",
                 sources = { "nvim_diagnostic" },
-                symbols = { error = " ", info = " " , warn = " " },
+                symbols = { error = " ", info = " ", warn = " " },
             }
-       },
+        },
         lualine_y = { "filetype" },
         lualine_z = { "progress" },
     },
