@@ -1,10 +1,5 @@
-# X server settings
-setroot $DESKTOP
+setroot --restore
+unclutter --fork --timeout 3
 setxkbmap -option caps:escape
-xrdb -load ~/.Xresources
 
-# Desktop daemons
-unclutter -noevents -idle 3 &
-urxvtd -q -o &
-
-exec i3
+exec xmonad
