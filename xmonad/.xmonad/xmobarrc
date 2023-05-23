@@ -1,5 +1,4 @@
-Config { font = "xft:SourceCodePro:antialiasing=true"
-       , additionalFonts = ["xft:FontAwesome"]
+Config { font = "xft:Hack Nerd Font:antialiasing=true"
        , bgColor = "#101010"
        , fgColor = "#f8f8f8"
        , position = Top
@@ -7,8 +6,9 @@ Config { font = "xft:SourceCodePro:antialiasing=true"
        , hideOnStart = False
        , border = NoBorder
        , commands = [ Run StdinReader
-                    , Run Date "<fc=#7cafc2><fn=1>\xf13d</fn></fc> %H:%M" "clock" 10
-                    , Run Date "<fc=#7cafc2><fn=1>\xf073</fn></fc> %A %B %d" "date" 120
+                    , Run Date "<fc=#7cafc2></fc> %H:%M" "clock" 10
+                    , Run Cpu ["-L","3","-H","50", "--normal","green","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run MPD
                         [ "-t","<fc=#7cafc2><statei></fc> <artist> <fc=#7cafc2>-</fc> <title>"
                         , "--"
@@ -20,5 +20,5 @@ Config { font = "xft:SourceCodePro:antialiasing=true"
                         [ "-t", "<fc=#8cafc2><fn=1>\xf1eb</fn></fc> Rogers49616 <fc=#7cafc2><fn=1>\xf019</fn></fc> <rx>KB <fc=#7cafc2><fn=1>\xf093</fn></fc> <tx>KB"
                         ] 10
                     ]
-       , template = "%StdinReader% }%mpd%{ %wlp4s0% %clock% "
+       , template = "%StdinReader% }%mpd%{ %cpu% %mem% %temp% %alsa% %clock% "
        }
