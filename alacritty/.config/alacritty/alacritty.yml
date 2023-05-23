@@ -8,8 +8,8 @@
 #
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
-#import:
-#  - /path/to/alacritty.yml
+import:
+  - ~/.config/alacritty/catppuccin-mocha.yml
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
@@ -32,6 +32,12 @@ window:
   #dimensions:
   #  columns: 0
   #  lines: 0
+
+  # Window opacity
+  #
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity: 1.0
 
   # Window position (changes require restart)
   #
@@ -175,21 +181,12 @@ font:
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
-# Colors (Tomorrow Night)
-colors:
+# Colors (Catppuccin)
+# colors:
   # Default colors
-  primary:
-    background: '#1e282d'
-    foreground: '#c4c7d1'
-
-    # Bright and dim foreground colors
-    #
-    # The dimmed foreground color is calculated automatically if it is not
-    # present. If the bright foreground color is not set, or
-    # `draw_bold_text_with_bright_colors` is `false`, the normal foreground
-    # color will be used.
-    # dim_foreground: '#828482'
-    # bright_foreground: '#eaeaea'
+  # primary:
+  #   background: '#1E1E28'
+    # foreground: '#DADAE8'
 
   # Cursor colors
   #
@@ -197,9 +194,9 @@ colors:
   #
   # Allowed values are CellForeground/CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
-  cursor:
-    text: CellBackground
-    cursor: CellForeground
+  # cursor:
+  #   text: CellBackground
+  #   cursor: CellForeground
 
   # Vi mode cursor colors
   #
@@ -267,56 +264,30 @@ colors:
   #  background: CellForeground
 
   # Normal colors
-  normal:
-    black:   '0x666666'
-    red:     '0xeb606b'
-    green:   '0xc3e88d'
-    yellow:  '0xf7eb95'
-    blue:    '0x80cbc4'
-    magenta: '0xff2f90'
-    cyan:    '0xaeddff'
-    white:   '0xffffff'
+  # normal:
+  #   black:   '#6E6C7E'
+  #   red:     '#E38C8F'
+  #   green:   '#B1E3AD'
+  #   yellow:  '#EBDDAA'
+  #   blue:    '#A4B9EF'
+  #   magenta: '#C6AAE8'
+  #   cyan:    '#E5B4E2'
+  #   white:   '#DADAE8'
 
   # Bright colors
-  bright:
-    black:   '0xff262b'
-    red:     '0xeb606b'
-    green:   '0xc3e88d'
-    yellow:  '0xf7eb95'
-    blue:    '0x7dc6bf'
-    magenta: '0x6c71c4'
-    cyan:    '0x35434d'
-    white:   '0xffffff'
+  # bright:
+  #   black:   '#6E6C7E'
+  #   red:     '#E38C8F'
+  #   green:   '#B1E3AD'
+  #   yellow:  '#EBDDAA'
+  #   blue:    '#A4B9EF'
+  #   magenta: '#C6AAE8'
+  #   cyan:    '#E5B4E2'
+  #   white:   '#DADAE8'
 
-  # Dim colors
-  #
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  #dim:
-  #  black:   '#131415'
-  #  red:     '#864343'
-  #  green:   '#777c44'
-  #  yellow:  '#9e824c'
-  #  blue:    '#556a7d'
-  #  magenta: '#75617b'
-  #  cyan:    '#5b7d78'
-  #  white:   '#828482'
-
-  # Indexed Colors
-  #
-  # The indexed colors include all colors from 16 to 256.
-  # When these are not set, they're filled with sensible defaults.
-  #
-  # Example:
-  #   `- { index: 16, color: '#ff00ff' }`
-  #
   # indexed_colors:
-  #   - { index: 16, color: '#de935f' }
-  #   - { index: 17, color: '#a3685a' }
-  #   - { index: 18, color: '#282a2e' }
-  #   - { index: 19, color: '#373b41' }
-  #   - { index: 20, color: '#b4b7b4' }
-  #   - { index: 21, color: '#e0e0e0' }
+  #   - { index: 16, color: '#F2CECF' }
+  #   - { index: 17, color: '#3E4058' }
 
 # Bell
 #
@@ -358,12 +329,6 @@ colors:
   #     args: ["Hello, World!"]
   #
   #command: None
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 1.0
 
 #selection:
   # This string contains all characters that are used as separators for
@@ -439,7 +404,7 @@ shell:
 # Send ESC (\x1b) before characters when alt is pressed.
 #alt_send_esc: true
 
-#mouse:
+mouse:
   # Click settings
   #
   # The `double_click` and `triple_click` settings control the time
@@ -449,7 +414,7 @@ shell:
   #triple_click: { threshold: 300 }
 
   # If this is `true`, the cursor is temporarily hidden when typing.
-  #hide_when_typing: false
+  hide_when_typing: false
 
 # Regex hints
 #
