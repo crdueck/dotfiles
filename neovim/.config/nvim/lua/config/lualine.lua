@@ -17,9 +17,10 @@ require("lualine").setup({
                 "diagnostics",
                 sources = { "nvim_diagnostic" },
                 symbols = { error = " ", info = " ", warn = " " },
-            }
+            },
+            "diff"
         },
-        lualine_y = { "filetype" },
+        lualine_y = {}, -- { "filetype" },
         lualine_z = { "progress" },
     },
     inactive_sections = {

@@ -20,7 +20,7 @@ cmp.setup({
     },
     mapping = {
         ["<C-c>"] = cmp.mapping.close(),
-        ["<C-b>"] = cmp.mapping.scroll_docs( -4),
+        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<CR>"] = cmp.mapping.confirm({ select = true }),
         ["<C-n>"] = function(fallback)
@@ -45,8 +45,8 @@ cmp.setup({
             end
         end, { "i", "s" }),
         ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if luasnip.jumpable( -1) then
-                luasnip.jump( -1)
+            if luasnip.jumpable(-1) then
+                luasnip.jump(-1)
             else
                 fallback()
             end

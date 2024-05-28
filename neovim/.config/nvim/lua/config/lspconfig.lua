@@ -3,7 +3,6 @@ local function on_attach(client, bufnr)
         vim.keymap.set("n", lhs, rhs, { buffer = bufnr, silent = true })
     end
 
-    buf_nmap("K", vim.lsp.buf.hover)
     buf_nmap("ga", vim.lsp.buf.code_action)
     buf_nmap("gd", vim.lsp.buf.definition)
     buf_nmap("gD", vim.lsp.buf.type_definition)
@@ -11,12 +10,7 @@ local function on_attach(client, bufnr)
     buf_nmap("gr", vim.lsp.buf.references)
     buf_nmap("gs", vim.lsp.buf.rename)
 
-    buf_nmap("<leader>e", vim.diagnostic.open_float)
-    buf_nmap("<leader>dq", vim.diagnostic.setloclist)
-    buf_nmap("<c-n>", vim.diagnostic.goto_next)
-    buf_nmap("<c-p>", vim.diagnostic.goto_prev)
-
-    vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+    vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
 
     if client.server_capabilities["documentFormattingProvider"] then
         vim.api.nvim_create_autocmd("BufWritePre", {
@@ -40,9 +34,14 @@ local function lspconfig(lsp, opts)
 end
 
 lspconfig("gopls")
-lspconfig("hls")
 lspconfig("jsonls", { cmd = { "vscode-json-languageserver", "--stdio" } })
-lspconfig("yamlls")
+-- lspconfig("yamlls")
+
+-- lspconfig("hls", {
+--     cmd = { "haskell-language-server-wrapper", "--lsp" },
+--     filetypes = { "haskell", "lhaskell", "cabal" },
+-- })
+
 lspconfig("lua_ls", {
     cmd = { "/usr/bin/lua-language-server" },
     settings = {

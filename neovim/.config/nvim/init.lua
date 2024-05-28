@@ -8,6 +8,8 @@ local disabled_builtins = {
     "shada_plugin",
     "tarPlugin",
     "tutor_mode_plugin",
+    "vimball",
+    "vimballPlugin",
     "zipPlugin",
 }
 
@@ -15,7 +17,12 @@ for _, builtin in ipairs(disabled_builtins) do
     vim.g["loaded_" .. builtin] = 1
 end
 
+-- vim.opt.runtimepath:remove("/etc/xdg/nvim")
+-- vim.opt.runtimepath:remove("/etc/xdg/nvim/after")
+-- vim.opt.runtimepath:remove("/usr/share/vim/vimfiles")
+
 vim.g.mapleader = ","
+vim.g.maplocalleader = ","
 vim.g.netrw_fastbrowse = 0
 
 require("autocmds")

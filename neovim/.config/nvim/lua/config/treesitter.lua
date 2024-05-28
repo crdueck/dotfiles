@@ -5,6 +5,7 @@ require("nvim-treesitter.configs").setup({
     indent = {
         enable = false
     },
+    auto_install = true,
     ensure_installed = {
         "bash",
         "c",
@@ -14,7 +15,9 @@ require("nvim-treesitter.configs").setup({
         "json",
         "lua",
         "markdown",
+        "markdown_inline",
         "python",
+        "vimdoc",
         "yaml",
     },
 })

@@ -34,3 +34,6 @@ nmap("Q", "@q")
 
 -- clear search highlighting
 nmap("<space>", "<cmd>nohlsearch<cr>", { silent = true })
+
+nmap("<tab>", "<cmd>bn<cr>", { silent = true })
+nmap("<s-tab>", "<cmd>bp<cr>", { silent = true })
