@@ -57,7 +57,7 @@ mpd_crossfade_time = 2
 # are some problems with it.
 #
 
-# visualizer_output_name = Visualizer feed
+visualizer_output_name =
 
 #
 # If you set format to 44100:16:2, make it 'yes'.
@@ -177,7 +177,8 @@ song_status_format = "$2%a $7» $4%t $7» $3%b$0"
 
 song_library_format = {%n - }{%t}|{%f}
 
-alternative_header_first_line_format = "$b$1:: {$7%t} {$4-} {$7%a} $1::$/b$0"
+# alternative_header_first_line_format = "$b$1[ {$7%t} {$4-} {$7%a} $1]$/b$0"
+alternative_header_first_line_format = "$b{$7%t} {$1-} {$7%a}$/b$0"
 alternative_header_second_line_format = "$b{{ $5%b}{ $6%y$9}}|{%D}$/b$0"
 
 now_playing_prefix = $b
@@ -245,7 +246,7 @@ browser_sort_format = {%a - }{%t}|{%f} {(%l)}
 #   not available.
 #
 
-song_columns_list_format = "(30)[cyan]{a} (40)[blue]{t|f} (35)[cyan]{b} (5f)[magenta]{l}"
+song_columns_list_format = "(30)[cyan]{a} (40)[blue]{t|f} (35)[cyan]{b} (5f)[blue]{l}"
 
 #### various settings #####
 
@@ -362,6 +363,8 @@ screen_switcher_mode = playlist, browser
 #
 startup_screen = playlist
 
+connected_message_on_startup = no
+
 #
 # Note: You can define startup slave screen
 # by choosing screen from the list above or
@@ -459,13 +462,13 @@ colors_enabled = yes
 
 empty_tag_color = cyan
 
-header_window_color = 240
+header_window_color = magenta
 
-volume_color = red
+volume_color = magenta
+
+state_flags_color = magenta
 
 state_line_color = default
-
-state_flags_color = 240
 
 main_window_color = default
 
