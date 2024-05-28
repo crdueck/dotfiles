@@ -7,6 +7,7 @@ opt.scrolloff = 5
 opt.shortmess = opt.shortmess + "c"
 opt.showmode = false
 opt.splitright = true
+opt.signcolumn = "no"
 
 -- General
 opt.clipboard = "unnamedplus"
