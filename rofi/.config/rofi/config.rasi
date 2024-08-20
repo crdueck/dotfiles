@@ -1,11 +1,19 @@
 configuration {
-	width: 32;
-	lines: 5;
-	columns: 1;
-	location: 0;
+	modi: "run,drun,window";
+	font: "Hack Nerd Font Regular 12";
+	terminal: "alacritty";
 	hide-scrollbar: true;
-	color-normal: "#181818, #d8d8d8, #181818, #181818, #ba8baf";
-	color-urgent: "#181818, #585858, #181818, #181818, #d8d8d8";
-	color-active: "#181818, #ba8baf, #181818, #181818, #d8d8d8";
-	color-window: "#181818, #181818, #181818, #181818, #d8d8d8";
+
+	matching: "fuzzy";
+
+	show-icons: true;
+	icon-theme: "Papirus";
+
+	display-drun: " ";
+	display-run: " ";
+	display-window: " ";
+	drun-display-format: "{icon} {name}";
+	drun-display-format: "{icon} {name}";
 }
+
+@theme "catppuccin-mocha"
