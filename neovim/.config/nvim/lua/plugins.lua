@@ -52,10 +52,12 @@ require("lazy").setup({
 
     {
         "nvim-neotest/neotest",
+        ft = "go",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "antoinemadec/FixCursorHold.nvim",
+            "nvim-neotest/nvim-nio",
             "nvim-neotest/neotest-go",
+            "antoinemadec/FixCursorHold.nvim",
         },
         config = function()
             require("config.neotest")
@@ -121,6 +123,29 @@ require("lazy").setup({
     },
 
     {
+          "folke/trouble.nvim",
+          opts = {},
+          cmd = "Trouble",
+          keys = {
+            {
+              "<leader>xx",
+              "<cmd>Trouble diagnostics toggle<cr>",
+              desc = "Diagnostics (Trouble)",
+            },
+            {
+              "<leader>xX",
+              "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+              desc = "Buffer Diagnostics (Trouble)",
+            },
+            {
+              "<leader>xt",
+              "<cmd>Trouble symbols toggle focus=false<cr>",
+              desc = "Symbols (Trouble)",
+            },
+        },
+    },
+
+    {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
@@ -130,6 +155,7 @@ require("lazy").setup({
 
     "tpope/vim-commentary",
     "tpope/vim-fugitive",
+    "tpope/vim-repeat",
     "tpope/vim-rhubarb",
     "tpope/vim-surround",
     "tpope/vim-vinegar",

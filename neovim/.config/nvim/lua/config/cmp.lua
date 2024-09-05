@@ -20,7 +20,7 @@ cmp.setup({
         })
     },
     mapping = {
-        ["<CR>"] = cmp.mapping.confirm({ select = true}),
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
         ["<C-c>"] = cmp.mapping.close(),
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
@@ -38,20 +38,20 @@ cmp.setup({
                 fallback()
             end
         end,
-        ["<Tab>"] = function(fallback)
+        ["<Tab>"] = cmp.mapping(function(fallback)
             if luasnip.expand_or_jumpable() then
                 luasnip.expand_or_jump()
             else
                 fallback()
             end
-        end,
-        ["<S-Tab>"] = function(fallback)
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
             if luasnip.jumpable(-1) then
                 luasnip.jump(-1)
             else
                 fallback()
             end
-        end
+        end, { "i", "s" })
     },
     snippet = {
         expand = function(args)

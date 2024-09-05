@@ -8,6 +8,9 @@ cmap("qq", "qa!")
 -- replace visual selection in file
 -- xmap("gs", "y:%s/<c-r>\"//g<left><left>")
 
+nmap("<tab>", "<cmd>bnext<cr>")
+nmap("<s-tab>", "<cmd>bprev<cr>")
+
 -- save thousands of keystrokes
 nmap(";", ":")
 

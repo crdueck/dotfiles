@@ -1,6 +1,7 @@
 require("nvim-treesitter.configs").setup({
     highlight = {
-        enable = true
+        enable = true,
+        disable = { "netrw" },
     },
     indent = {
         enable = false
@@ -14,8 +15,12 @@ require("nvim-treesitter.configs").setup({
         "javascript",
         "json",
         "lua",
+        "markdown",
+        "markdown_inline",
         "php",
         "python",
+        "rego",
+        "vimdoc",
         "yaml",
     },
 })

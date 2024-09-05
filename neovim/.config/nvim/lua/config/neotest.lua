@@ -11,3 +11,6 @@ nmap("<leader>t", function() neotest.run.run(vim.fn.expand("%")) end)
 
 -- run nearest test case
 nmap("<leader>tf", neotest.run.run)
+
+-- toggle output panel
+nmap("<leader>tt", neotest.output_panel.toggle)
