@@ -19,14 +19,12 @@
 [mergetool "vimdiff"]
     path = /usr/local/bin/vimdiff
 
-[url "ssh://git@github.com/Wattpad/"]
-	insteadOf = "wp:"
-
-[url "ssh://git@github.com/"]
-	insteadOf = "gh:"
-
-[url "ssh://git@github.com/"]
-    insteadOf = https://github.com/
-
 [push]
 	default = current
+	autosetupremote = true
+
+[rebase]
+	autosquash = true
+
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager
