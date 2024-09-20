@@ -22,6 +22,8 @@ import XMonad.Layout.SubLayouts
 import XMonad.Layout.TwoPanePersistent
 import XMonad.Layout.WindowNavigation
 import XMonad.Util.Cursor
+import XMonad.Util.NamedScratchpad
+import XMonad.Util.WorkspaceCompare
 
 import Data.List (isInfixOf)
 import Data.Map (Map, fromList)
@@ -29,24 +31,33 @@ import Graphics.X11.ExtraTypes.XF86
 import System.Exit (exitSuccess)
 
 main :: IO ()
-main = xmonad . ewmh . docks $ def
+main = xmonad . addEwmhWorkspaceSort filterScratchpads . ewmh . docks $ def
     { clickJustFocuses   = False
     , focusFollowsMouse  = False
-    , focusedBorderColor = "#aeddff"
-    , normalBorderColor  = "#181818"
+    , focusedBorderColor = "#cba6f7" -- mauve
+    , normalBorderColor  = "#11111b" -- crust
     , keys               = keybindings
     , layoutHook         = layoutHooks
     , manageHook         = manageHooks
     , startupHook        = startupHooks
     , workspaces         = ["1"]
     , terminal           = "alacritty"
-    }
+    } where filterScratchpads = return (filterOutWs [scratchpadWorkspaceTag])
 
 manageHooks :: ManageHook
 manageHooks = composeAll
     [ insertPosition End Newer
     , isDialog --> doCenterFloat
     , isFullscreen --> doFullFloat
+    , namedScratchpadManageHook scratchpads
+    ]
+
+scratchpads :: NamedScratchpads
+scratchpads =
+    [ NS "terminal"  "alacritty --title nsp-terminal" (title =? "nsp-terminal")
+        (customFloating $ W.RationalRect (1/4) (1/6) (1/2) (2/3)) -- x, y, w, h
+    , NS "translate" "alacritty --title nsp-translate -e trans -shell" (title =? "nsp-translate")
+        (customFloating $ W.RationalRect (1/3) (1/3) (1/3) (1/3)) -- x, y, w, h
     ]
 
 layoutHooks = smartBorders $
@@ -84,6 +95,10 @@ keybindings :: XConfig l -> Map (KeyMask, KeySym) (X ())
 keybindings XConfig{..} = Data.Map.fromList $
     [ ((modMask,               xK_p        ), spawn "rofi -show run")
     , ((modMask,               xK_Tab      ), spawn "rofi -show window")
+    -- spawn floating terminal
+    , ((modMask,               xK_BackSpace), namedScratchpadAction scratchpads "terminal")
+    -- spawn floating translator
+    , ((modMask,               xK_u        ), namedScratchpadAction scratchpads "translate")
     -- spawn terminal
     , ((modMask .|. shiftMask, xK_Return   ), spawn terminal)
     -- close focused window
@@ -125,16 +140,16 @@ keybindings XConfig{..} = Data.Map.fromList $
     -- kill xmonad and X11
     , ((modMask .|. shiftMask, xK_Escape   ), liftIO exitSuccess)
     -- move to next workspace
-    , ((winMask,               xK_Return   ), removeEmptyWorkspaceAfter nextWS)
+    , ((winMask,               xK_Return   ), removeEmptyWorkspaceAfter (move Next))
     -- move to previous workspace
-    , ((winMask,               xK_BackSpace), removeEmptyWorkspaceAfter prevWS)
+    , ((winMask,               xK_BackSpace), removeEmptyWorkspaceAfter (move Prev))
     -- bring window to next workspace
-    , ((winMask .|. shiftMask, xK_Return   ), removeEmptyWorkspaceAfter (shiftToNext >> nextWS))
+    , ((winMask .|. shiftMask, xK_Return   ), removeEmptyWorkspaceAfter (shift Next >> move Next))
     -- bring window to previous workspace
-    , ((winMask .|. shiftMask, xK_BackSpace), removeEmptyWorkspaceAfter (shiftToPrev >> prevWS))
+    , ((winMask .|. shiftMask, xK_BackSpace), removeEmptyWorkspaceAfter (shift Prev >> move Prev))
     -- media bindings
-    , ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 5%- toggle unmute")
-    , ((0, xF86XK_AudioRaiseVolume), spawn "amixer set Master 5%+ toggle unmute")
+    , ((0, xF86XK_AudioLowerVolume), spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-")
+    , ((0, xF86XK_AudioRaiseVolume), spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+")
     , ((0, xF86XK_AudioPlay), spawn "mpc toggle")
     , ((0, xF86XK_AudioPrev), spawn "mpc prev")
     , ((0, xF86XK_AudioNext), spawn "mpc next")
@@ -147,3 +162,6 @@ keybindings XConfig{..} = Data.Map.fromList $
         (i, k) <- zip [1..] [xK_1..xK_9],
         (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask), (copy, ctrlMask)]
     ] where withHiddenWorkspace f i = addHiddenWorkspace i >> windows (f i)
+
+shift d = shiftTo d (ignoringWSs [scratchpadWorkspaceTag])
+move  d = moveTo  d (ignoringWSs [scratchpadWorkspaceTag])
