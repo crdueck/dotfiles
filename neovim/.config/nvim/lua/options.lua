@@ -1,5 +1,9 @@
 local opt = vim.opt
 
+-- Leader
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
+
 -- UI
 opt.number = true
 opt.scrolljump = 5

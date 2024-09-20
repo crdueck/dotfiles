@@ -1,37 +1,21 @@
-local disabled_builtins = {
-    "2html_plugin",
-    "fzf",
-    "gzip",
-    "matchit",
-    "matchparen",
-    "rplugin",
-    "shada_plugin",
-    "tarPlugin",
-    "tutor_mode_plugin",
-    "vimball",
-    "vimballPlugin",
-    "zipPlugin",
-}
-
-for _, builtin in ipairs(disabled_builtins) do
-    vim.g["loaded_" .. builtin] = 1
-end
-
--- vim.opt.runtimepath:remove("/etc/xdg/nvim")
--- vim.opt.runtimepath:remove("/etc/xdg/nvim/after")
--- vim.opt.runtimepath:remove("/usr/share/vim/vimfiles")
-
-vim.g.mapleader = ","
-vim.g.maplocalleader = ","
-vim.g.netrw_fastbrowse = 0
-
 require("autocmds")
+require("builtins")
 require("keymaps")
 require("options")
-require("plugins")
 
--- TODO
--- toggle fugitive status keymap
--- lsp-aware search/replace in file/project
--- map("<leader>tt", neotest.summary.toggle)
--- nmap("<leader>to", neotest.output.open)
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable",
+        lazypath,
+    })
+end
+
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup("plugins")
