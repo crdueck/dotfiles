@@ -5,8 +5,11 @@
 [diff]
 	tool = vimdiff
 
-[difftool]
-	prompt = false
-
 [init]
 	defaultBranch = main
+
+[pull]
+    rebase = true
+
+[rebase]
+    autosquash = true
