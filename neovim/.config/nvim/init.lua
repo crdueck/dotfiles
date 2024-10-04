@@ -1,18 +1,21 @@
-vim.g.mapleader = ","
-vim.g.netrw_fastbrowse = 0
-
-vim.g.loaded_node_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_ruby_provider = 0
-
 require("autocmds")
-require("options")
+require("builtins")
 require("keymaps")
-require("plugins")
+require("options")
 
--- TODO features
--- fugitive status toggle
--- open all telescope selections / send to qf
--- automatically accept code actions (go imports)
--- telescope ui for selections: https://github.com/nvim-telescope/telescope-ui-select.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable",
+        lazypath,
+    })
+end
+
+vim.opt.rtp:prepend(lazypath)
+
+require("lazy").setup("plugins")

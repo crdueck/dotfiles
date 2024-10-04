@@ -1,5 +1,9 @@
 local opt = vim.opt
 
+-- Leader
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
+
 -- General
 opt.clipboard = opt.clipboard + "unnamedplus"
 opt.completeopt = "menuone,noselect"
